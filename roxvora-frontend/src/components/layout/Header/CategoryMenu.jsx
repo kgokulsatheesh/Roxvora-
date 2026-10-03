@@ -1,299 +1,88 @@
-import React, { useState } from "react";
+import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 
-import {
-  Drawer,
-  Box,
-  Typography,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  Collapse,
-  Divider,
-} from "@mui/material";
 
-import {
-  Close,
-  ExpandLess,
-  ExpandMore,
-  FavoriteBorder,
-  PersonOutline,
-  ContactSupportOutlined,
-} from "@mui/icons-material";
+const CategoryMenu = ({ category, isActive, onMouseEnter, onMouseLeave }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
 
-import { useNavigate } from "react-router-dom";
+  useEffect(() => {
+    setIsOpen(isActive);
+  }, [isActive]);
 
-const CategoryMenu = ({
-  open,
-  onClose,
-}) => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
 
-  const [shopOpen, setShopOpen] =
-    useState(false);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
-  const goTo = (path) => {
-    navigate(path);
-    onClose();
+  const subCategories = {
+    Women: ['Dresses', 'Tops', 'Bottoms', 'Outerwear', 'Knitwear'],
+    Men: ['Tops', 'Bottoms', 'Outerwear', 'Shoes'],
+    Kids: ['Boys', 'Girls', 'Baby', 'Toys'],
+    Accessories: ['Accessories', 'Bags', 'Shoes'],
+    Sale: ['Up to 50%', 'Up to 70%', 'Clearance', 'Final Sale'],
+    'New Arrivals': ['This Week', 'Trending', 'Best Sellers', 'Coming Soon'],
   };
 
+  const subs = subCategories[category.label] || [];
+  const Icon = category.icon;
+
   return (
-    <Drawer
-      anchor="left"
-      open={open}
-      onClose={onClose}
-      PaperProps={{
-        sx: {
-          width: {
-            xs: "82%",
-            sm: 360,
-          },
-        },
-      }}
+    <div
+      ref={menuRef}
+      className="relative"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      role="menuitem"
+      aria-haspopup="true"
+      aria-expanded={isOpen}
     >
-
-      {/* HEADER */}
-
-      <Box
-        sx={{
-          height: 70,
-          px: 2.5,
-
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-
-          borderBottom:
-            "1px solid #eeeeee",
-        }}
+      <Link
+        to={category.href}
+        className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+          isActive ? 'text-secondary bg-primary-50' : 'text-neutral-600 hover:text-primary'
+        }`}
+        role="menuitem"
+        aria-label={category.label}
       >
-        <Typography
-          sx={{
-            fontSize: "23px",
-            fontWeight: 800,
-            letterSpacing: "1.5px",
-            color: "#173b36",
-          }}
+        {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
+        {category.label}
+        <FiChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+      </Link>
+
+      {isOpen && subs.length > 0 && (
+        <div
+          className="absolute top-full left-0 pt-2"
+          role="menu"
+          aria-label={`${category.label} subcategories`}
         >
-          ROXVORA
-        </Typography>
-
-        <IconButton onClick={onClose}>
-          <Close />
-        </IconButton>
-      </Box>
-
-      {/* MENU */}
-
-      <List sx={{ px: 1.5, py: 2 }}>
-
-        {/* HOME */}
-
-        <ListItemButton
-          onClick={() => goTo("/")}
-        >
-          <ListItemText
-            primary="Home"
-          />
-        </ListItemButton>
-
-        {/* SHOP */}
-
-        <ListItemButton
-          onClick={() =>
-            setShopOpen(!shopOpen)
-          }
-        >
-          <ListItemText
-            primary="Shop"
-          />
-
-          {shopOpen ? (
-            <ExpandLess />
-          ) : (
-            <ExpandMore />
-          )}
-        </ListItemButton>
-
-        {/* SHOP CHILDREN */}
-
-        <Collapse
-          in={shopOpen}
-          timeout="auto"
-          unmountOnExit
-        >
-          <List
-            component="div"
-            disablePadding
-          >
-
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() =>
-                goTo("/shop")
-              }
-            >
-              <ListItemText
-                primary="All Products"
-              />
-            </ListItemButton>
-
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() =>
-                goTo("/shop/men")
-              }
-            >
-              <ListItemText
-                primary="Men"
-              />
-            </ListItemButton>
-
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() =>
-                goTo("/shop/women")
-              }
-            >
-              <ListItemText
-                primary="Women"
-              />
-            </ListItemButton>
-
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() =>
-                goTo("/shop/kids")
-              }
-            >
-              <ListItemText
-                primary="Kids"
-              />
-            </ListItemButton>
-
-            <ListItemButton
-              sx={{ pl: 4 }}
-              onClick={() =>
-                goTo("/shop/accessories")
-              }
-            >
-              <ListItemText
-                primary="Accessories"
-              />
-            </ListItemButton>
-
-          </List>
-        </Collapse>
-
-        {/* NEW ARRIVALS */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/new-arrivals")
-          }
-        >
-          <ListItemText
-            primary="New Arrivals"
-          />
-        </ListItemButton>
-
-        {/* BEST SELLERS */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/best-sellers")
-          }
-        >
-          <ListItemText
-            primary="Best Sellers"
-          />
-        </ListItemButton>
-
-        {/* COLLECTIONS */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/collections")
-          }
-        >
-          <ListItemText
-            primary="Collections"
-          />
-        </ListItemButton>
-
-        {/* OFFERS */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/offers")
-          }
-        >
-          <ListItemText
-            primary="Offers"
-          />
-        </ListItemButton>
-
-        <Divider sx={{ my: 2 }} />
-
-        {/* WISHLIST */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/wishlist")
-          }
-        >
-          <FavoriteBorder
-            sx={{
-              mr: 2,
-              color: "#173b36",
-            }}
-          />
-
-          <ListItemText
-            primary="Wishlist"
-          />
-        </ListItemButton>
-
-        {/* ACCOUNT */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/account")
-          }
-        >
-          <PersonOutline
-            sx={{
-              mr: 2,
-              color: "#173b36",
-            }}
-          />
-
-          <ListItemText
-            primary="My Account"
-          />
-        </ListItemButton>
-
-        {/* CONTACT */}
-
-        <ListItemButton
-          onClick={() =>
-            goTo("/contact")
-          }
-        >
-          <ContactSupportOutlined
-            sx={{
-              mr: 2,
-              color: "#173b36",
-            }}
-          />
-
-          <ListItemText
-            primary="Contact & Support"
-          />
-        </ListItemButton>
-
-      </List>
-    </Drawer>
+          <div className="w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2 animate-slide-down">
+            {subs.map((sub, i) => (
+              <Link
+                key={i}
+                to={`${category.href}/${sub.toLowerCase().replace(/\s+/g, '-')}`}
+                className="block px-4 py-2 text-sm text-neutral-600 hover:text-primary hover:bg-neutral-50 transition-colors"
+                role="menuitem"
+              >
+                <span className="flex items-center gap-2">
+                  <FiChevronRight className="w-3 h-3 text-neutral-400" aria-hidden="true" />
+                  {sub}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
