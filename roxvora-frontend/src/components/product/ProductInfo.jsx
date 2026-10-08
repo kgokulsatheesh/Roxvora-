@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { appConfig } from '@config/appConfig';
-import { buildSeedReviews, selectUserReviews } from '@store/slices/reviewSlice';
-import Price from '@components/common/Price/Price';
-import Rating from '@components/common/Rating/Rating';
+import { appConfig } from '../../config/appConfig';
+import { buildSeedReviews, selectUserReviews } from '../../store/slices/reviewSlice';
+import Price from '../common/Price/Price';
+import Rating from '../common/Rating/Rating';
 import Badge from './ProductBadge';
 import SizeSelector from './SizeSelector';
 import ColorSelector from './ColorSelector';
@@ -119,15 +119,15 @@ const ProductInfo = ({
             {product.rating && (
               <Rating value={product.rating} max={5} size="md" readonly showLabel />
             )}
-{product.reviewCount && (
-                <button
-                  type="button"
-                  onClick={jumpToReviews}
-                  className="text-sm text-secondary hover:text-primary transition-colors"
-                >
-                  ({reviewCount || product.reviewCount} reviews)
-                </button>
-              )}
+            {product.reviewCount && (
+              <button
+                type="button"
+                onClick={jumpToReviews}
+                className="text-sm text-secondary hover:text-primary transition-colors"
+              >
+                ({reviewCount || product.reviewCount} reviews)
+              </button>
+            )}
           </div>
 
           <Price
@@ -237,11 +237,10 @@ const ProductInfo = ({
               id={`${tab.id}-tab`}
               onClick={() => setActiveTab(tab.id)}
               title={tab.label}
-              className={`min-w-0 shrink-0 truncate px-4 py-3.5 text-[0.9375rem] transition-colors duration-200 -mb-px border-b-2 xl:px-2 xl:text-center xl:text-sm ${
-                activeTab === tab.id
+              className={`min-w-0 shrink-0 truncate px-4 py-3.5 text-[0.9375rem] transition-colors duration-200 -mb-px border-b-2 xl:px-2 xl:text-center xl:text-sm ${activeTab === tab.id
                   ? 'border-secondary text-primary font-semibold'
                   : 'border-transparent font-medium text-ink-soft hover:text-primary hover:border-neutral-300'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

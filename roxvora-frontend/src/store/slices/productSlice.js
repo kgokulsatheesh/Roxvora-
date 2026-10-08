@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { helpers } from '@utils/helpers';
+// import { helpers } from 'utils/helpers';
+import { helpers } from "../../utils/helpers"
 
 const initialState = {
   products: [

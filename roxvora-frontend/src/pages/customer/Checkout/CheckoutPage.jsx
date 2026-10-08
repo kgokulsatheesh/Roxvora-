@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import CheckoutStepper from '@components/checkout/CheckoutStepper';
-import CustomerInformation from '@components/checkout/CustomerInformation';
-import DeliveryInformation from '@components/checkout/DeliveryInformation';
-import PaymentMethod from '@components/checkout/PaymentMethod';
-import OrderSummary from '@components/checkout/OrderSummary';
-import EmptyCart from '@components/cart/EmptyCart';
-import { selectCartItems, selectCartCoupon, clearCart } from '@store/slices/cartSlice';
-import { placeOrder } from '@store/slices/orderSlice';
-import { appConfig } from '@config/appConfig';
+import CheckoutStepper from '../../../components/checkout/CheckoutStepper';
+import CustomerInformation from '../../../components/checkout/CustomerInformation';
+import DeliveryInformation from '../../../components/checkout/DeliveryInformation';
+import PaymentMethod from '../../../components/checkout/PaymentMethod';
+import OrderSummary from '../../../components/checkout/OrderSummary';
+import EmptyCart from '../../../components/cart/EmptyCart';
+import { selectCartItems, selectCartCoupon, clearCart } from '../../../store/slices/cartSlice';
+import { placeOrder } from '../../../store/slices/orderSlice';
+// import { appConfig } from '@config/appConfig';
+import { appConfig } from "../../../config/appConfig"
 
 const SHIPPING_PRICES = {
   standard: appConfig.cart.defaultShipping,

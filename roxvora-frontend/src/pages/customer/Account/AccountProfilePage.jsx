@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { selectUser, setUser } from '@store/slices/authSlice';
-import ProfileForm from '@components/account/ProfileForm';
+import { selectUser, setUser } from '../../../store/slices/authSlice';
+import ProfileForm from '../../../components/account/ProfileForm';
 
 const AccountProfilePage = () => {
   const dispatch = useDispatch();

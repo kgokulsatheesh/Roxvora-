@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import AuthLayout from '@components/auth/AuthLayout';
-import ResetPasswordForm from '@components/auth/ResetPasswordForm';
+import AuthLayout from '../../../components/auth/AuthLayout';
+import ResetPasswordForm from '../../../components/auth/ResetPasswordForm';
 
 const ResetPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);

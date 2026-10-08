@@ -1,4 +1,4 @@
-import DashboardOverview from '@components/admin/dashboard/DashboardOverview';
+import DashboardOverview from '../../../components/admin/dashboard/DashboardOverview';
 
 const DashboardPage = () => {
   return (

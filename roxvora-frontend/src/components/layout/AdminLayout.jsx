@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useLocation, Link } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import PageTransition from '../common/PageTransition/PageTransition';
 import { FiMenu, FiX, FiHome, FiBox, FiShoppingBag, FiUsers, FiTag, FiDollarSign, FiSettings, FiGrid, FiChevronRight, FiLogOut, FiBell, FiSearch, FiUser } from 'react-icons/fi';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { selectUser } from '@store/slices/authSlice';
-import { logout } from '@store/slices/authSlice';
+import { selectUser, logout } from '../../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const adminNavItems = [
@@ -33,9 +34,8 @@ const AdminLayout = () => {
   return (
     <div className="flex h-screen bg-neutral-50 overflow-hidden">
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-neutral-200 transform transition-transform duration-300 lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-neutral-200 transform transition-transform duration-300 lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
         aria-label="Admin sidebar"
       >
         <div className="flex flex-col h-full">
@@ -155,7 +155,11 @@ const AdminLayout = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-8" role="main" id="admin-main-content">
-          <Outlet />
+          <AnimatePresence mode="wait" initial={false}>
+            <PageTransition key={location.pathname}>
+              <Outlet />
+            </PageTransition>
+          </AnimatePresence>
         </main>
       </div>
     </div>

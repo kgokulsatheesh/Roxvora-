@@ -1,5 +1,5 @@
 
-import Button from '@components/common/Button/Button';
+import Button from '../../../components/common/Button/Button';
 import { FiPlus } from 'react-icons/fi';
 
 

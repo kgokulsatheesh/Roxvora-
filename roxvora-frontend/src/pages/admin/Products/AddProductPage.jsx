@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import ProductForm from '@components/admin/products/ProductForm';
-import ProductImageUpload from '@components/admin/products/ProductImageUpload';
-import Button from '@components/common/Button/Button';
+import ProductForm from '../../../components/admin/products/ProductForm';
+import ProductImageUpload from '../../../components/admin/products/ProductImageUpload';
+import Button from '../../../components/common/Button/Button';
 
 const AddProductPage = () => {
   const [images, setImages] = useState([]);

@@ -3,6 +3,16 @@ import { typography } from './typography';
 import { breakpoints, mediaQueries, spacing, borderRadius, transitions, zIndices } from './breakpoints';
 import { componentOverrides, keyframes } from './componentOverrides';
 
+// Declare BEFORE cssVariables so the template literal can reference it.
+export const containerSizes = {
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+  full: '100%',
+};
+
 export const theme = {
   colors,
   typography,
@@ -109,6 +119,12 @@ export const cssVariables = `
     --color-divider: ${colors.divider};
     --color-border: ${colors.border};
 
+    /* Gradients */
+    --gradient-button: ${colors.gradients.button};
+    --gradient-hero: ${colors.gradients.hero};
+    --gradient-ink: ${colors.gradients.primary};
+    --gradient-gold: ${colors.gradients.secondary};
+
     /* Typography */
     --font-family-primary: ${typography.fontFamilies.primary};
     --font-family-secondary: ${typography.fontFamilies.secondary};
@@ -187,16 +203,16 @@ export const cssVariables = `
     --container-lg: ${containerSizes.lg};
     --container-xl: ${containerSizes.xl};
     --container-2xl: ${containerSizes['2xl']};
+
+    /* Shadows */
+    --shadow-xs: ${colors.shadows.xs};
+    --shadow-sm: ${colors.shadows.sm};
+    --shadow-md: ${colors.shadows.md};
+    --shadow-lg: ${colors.shadows.lg};
+    --shadow-xl: ${colors.shadows.xl};
+    --shadow-2xl: ${colors.shadows['2xl']};
+    --shadow-inner: ${colors.shadows.inner};
   }
 `;
-
-export const containerSizes = {
-  sm: '640px',
-  md: '768px',
-  lg: '1024px',
-  xl: '1280px',
-  '2xl': '1536px',
-  full: '100%',
-};
 
 export default theme;

@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
-import { selectCartItems, selectCartCoupon, clearCart, setCoupon, removeCoupon } from '@store/slices/cartSlice';
-import CartList from '@components/cart/CartList';
-import CartSummary from '@components/cart/CartSummary';
-import CouponInput from '@components/cart/CouponInput';
-import EmptyCart from '@components/cart/EmptyCart';
-import Button from '@components/common/Button/Button';
-import { formatCurrency } from '@utils/formatCurrency';
-import { appConfig } from '@config/appConfig';
+import { selectCartItems, selectCartCoupon, clearCart, setCoupon, removeCoupon } from '../../../store/slices/cartSlice';
+import CartList from '../../../components/cart/CartList';
+import CartSummary from '../../../components/cart/CartSummary';
+import CouponInput from '../../../components/cart/CouponInput';
+import EmptyCart from '../../../components/cart/EmptyCart';
+import Button from '../../../components/common/Button/Button';
+import { formatCurrency } from '../../../utils/formatCurrency';
+import { appConfig } from '../../../config/appConfig';
 
 // Demo coupon codes. Replace with a real API call when the backend is wired.
 const COUPONS = {

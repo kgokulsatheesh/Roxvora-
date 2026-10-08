@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, logout } from '@store/slices/authSlice';
-import AccountHeader from '@components/account/AccountHeader';
-import AccountSidebar from '@components/account/AccountSidebar';
+import { selectUser, logout } from '../../../store/slices/authSlice';
+import AccountHeader from '../../../components/account/AccountHeader';
+import AccountSidebar from '../../../components/account/AccountSidebar';
 
 const AccountLayout = () => {
   const dispatch = useDispatch();

@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FiFilter, FiSearch, FiTruck, FiX } from 'react-icons/fi';
-import OrderCard from '@components/account/OrderCard';
-import { selectOrders } from '@store/slices/orderSlice';
+// import OrderCard from '@components/account/OrderCard';
+import OrderCard from "../../../components/account/OrderCard";
+// import { selectOrders } from '@store/slices/orderSlice';
+import { selectOrders } from '../../../store/slices/orderSlice';
 import { ACCOUNT_ORDERS } from './accountOrdersData';
 
 const FILTERS = [

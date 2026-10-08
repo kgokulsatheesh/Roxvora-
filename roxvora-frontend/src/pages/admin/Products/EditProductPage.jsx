@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import ProductForm from '@components/admin/products/ProductForm';
-import ProductImageUpload from '@components/admin/products/ProductImageUpload';
+import ProductForm from '../../../components/admin/products/ProductForm';
+import ProductImageUpload from '../../../components/admin/products/ProductImageUpload';
 
 const EditProductPage = ({ params }) => {
   const [images, setImages] = useState([]);

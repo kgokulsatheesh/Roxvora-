@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '@store/slices/authSlice';
-import AuthLayout from '@components/auth/AuthLayout';
-import RegisterForm from '@components/auth/RegisterForm';
+// import { setCredentials } from '@store/slices/authSlic';
+import { setCredentials } from '../../../store/slices/authSlice';
+import AuthLayout from '../../../components/auth/AuthLayout';
+import RegisterForm from '../../../components/auth/RegisterForm';
 
 const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiUser, FiHeart, FiShoppingBag, FiTag, FiStar } from 'react-icons/fi';
+import { Link, useLocation } from 'react-router-dom';
+import { FiUser, FiHeart, FiShoppingBag, FiTag, FiStar, FiHome, FiMail } from 'react-icons/fi';
 
 import CategoryMenu from './CategoryMenu';
 
@@ -12,9 +13,16 @@ const categories = [
   { label: 'New Arrivals', href: '/shop/new', icon: FiStar },
 ];
 
+// Simple direct links that don't need a dropdown
+const directLinks = [
+  { label: 'Home', href: '/', icon: FiHome },
+  { label: 'Contact', href: '/contact', icon: FiMail },
+];
+
 const DesktopNavbar = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const navbarRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -28,7 +36,22 @@ const DesktopNavbar = () => {
   }, []);
 
   return (
-    <div className="hidden lg:flex items-center gap-6" ref={navbarRef} role="menubar">
+    <div className="hidden lg:flex items-center gap-1" ref={navbarRef} role="menubar">
+      {/* Home */}
+      <Link
+        to="/"
+        className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+          location.pathname === '/'
+            ? 'text-secondary bg-primary-50'
+            : 'text-neutral-600 hover:text-primary'
+        }`}
+        role="menuitem"
+      >
+        <FiHome className="w-4 h-4" aria-hidden="true" />
+        Home
+      </Link>
+
+      {/* Shop category dropdowns */}
       {categories.map((category, index) => (
         <CategoryMenu
           key={category.href}
@@ -38,6 +61,20 @@ const DesktopNavbar = () => {
           onMouseLeave={() => setActiveCategory(null)}
         />
       ))}
+
+      {/* Contact */}
+      <Link
+        to="/contact"
+        className={`flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors rounded-lg ${
+          location.pathname === '/contact'
+            ? 'text-secondary bg-primary-50'
+            : 'text-neutral-600 hover:text-primary'
+        }`}
+        role="menuitem"
+      >
+        <FiMail className="w-4 h-4" aria-hidden="true" />
+        Contact
+      </Link>
     </div>
   );
 };

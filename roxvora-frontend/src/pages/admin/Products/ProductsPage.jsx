@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import ProductTable from '@components/admin/products/ProductTable';
-import Button from '@components/common/Button/Button';
+import ProductTable from '../../../components/admin/products/ProductTable';
+import Button from '../../../components/common/Button/Button';
 import { FiPlus, FiFilter } from 'react-icons/fi';
 
-import Input from '@components/common/Input/Input';
+import Input from '../../../components/common/Input/Input';
 
 const ProductsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');

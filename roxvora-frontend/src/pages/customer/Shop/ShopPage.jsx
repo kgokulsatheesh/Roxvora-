@@ -1,10 +1,10 @@
 import { FiFilter } from 'react-icons/fi';
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
-import ProductGrid from '@components/product/ProductGrid';
-import ShopHeader from '@components/shop/ShopHeader';
-import FilterSidebar from '@components/shop/FilterSidebar';
-import { selectProducts, selectCategories } from '@store/slices/productSlice';
+import ProductGrid from '../../../components/product/ProductGrid';
+import ShopHeader from '../../../components/shop/ShopHeader';
+import FilterSidebar from '../../../components/shop/FilterSidebar';
+import { selectProducts, selectCategories } from '../../../store/slices/productSlice';
 
 const PRICE_MIN = 0;
 const PRICE_MAX = 25000;

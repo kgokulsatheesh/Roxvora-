@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FiPlus } from 'react-icons/fi';
-import AddressCard from '@components/account/AddressCard';
+import AddressCard from "../../../components/account/AddressCard";
 
 const INITIAL_ADDRESSES = [
   {

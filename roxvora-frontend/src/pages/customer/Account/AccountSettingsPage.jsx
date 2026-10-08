@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser, setUser } from '@store/slices/authSlice';
-import Button from '@components/common/Button/Button';
+import { selectUser, setUser } from "../../../store/slices/authSlice";
+import Button from "../../../components/common/Button/Button";
 
 const AccountSettingsPage = () => {
   const dispatch = useDispatch();

@@ -2,15 +2,15 @@ import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FiChevronRight, FiTruck, FiRotateCcw, FiShield } from 'react-icons/fi';
 
-import ProductGrid from '@components/product/ProductGrid';
-import ProductGallery from '@components/product/ProductGallery';
-import ProductInfo from '@components/product/ProductInfo';
+import ProductGrid from '../../../components/product/ProductGrid';
+import ProductGallery from '../../../components/product/ProductGallery';
+import ProductInfo from '../../../components/product/ProductInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
-import { selectProductBySlug, selectProducts } from '@store/slices/productSlice';
-import { addToCart } from '@store/slices/cartSlice';
-import { addToWishlist, removeFromWishlist } from '@store/slices/wishlistSlice';
-import { appConfig } from '@config/appConfig';
+import { selectProductBySlug, selectProducts } from '../../../store/slices/productSlice';
+import { addToCart } from '../../../store/slices/cartSlice';
+import { addToWishlist, removeFromWishlist } from '../../../store/slices/wishlistSlice';
+import { appConfig } from '../../../config/appConfig';
 
 const ProductDetailsPage = () => {
   const { slug } = useParams();

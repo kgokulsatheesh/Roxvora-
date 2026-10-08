@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
-import Pagination from '@components/common/Pagination/Pagination';
+import Pagination from '../common/Pagination/Pagination';
 import { FiPackage, FiChevronRight } from 'react-icons/fi';
 
 

@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import ProductGrid from '@components/product/ProductGrid';
-import ShopHeader from '@components/shop/ShopHeader';
-import CategoryGrid from '@components/shop/CategoryGrid';
-import { selectProducts, selectCategories } from '@store/slices/productSlice';
+import ProductGrid from '../../../components/product/ProductGrid';
+import ShopHeader from '../../../components/shop/ShopHeader';
+import CategoryGrid from '../../../components/shop/CategoryGrid';
+import { selectProducts, selectCategories } from '../../../store/slices/productSlice';
 
 const CATEGORY_GROUPS = {
   women: ['Dresses', 'Tops', 'Bottoms', 'Outerwear', 'Knitwear'],

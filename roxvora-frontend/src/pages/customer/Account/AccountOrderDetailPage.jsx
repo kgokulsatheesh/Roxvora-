@@ -1,9 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FiArrowLeft, FiTruck, FiCreditCard, FiPackage } from 'react-icons/fi';
-import OrderStatus from '@components/account/OrderStatus';
-import Price from '@components/common/Price/Price';
-import { selectOrderById } from '@store/slices/orderSlice';
+import OrderStatus from "../../../components/account/OrderStatus";
+// import Price from '../components/common/Price/Price';
+import Price from "../../../components/common/Price/Price"
+// import { selectOrderById } from '../store/slices/orderSlice';
+import { selectOrderById } from "../../../store/slices/orderSlice";
 import { getOrderById } from './accountOrdersData';
 
 const AccountOrderDetailPage = () => {

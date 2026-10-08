@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
-import { selectWishlistItems } from '@store/slices/wishlistSlice';
-import WishlistGrid from '@components/wishlist/WishlistGrid';
+import { selectWishlistItems } from '../../../store/slices/wishlistSlice';
+import WishlistGrid from '../../../components/wishlist/WishlistGrid';
 import { Link } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
 

@@ -1,27 +1,15 @@
 import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { FiThumbsUp, FiCheckCircle, FiStar, FiEdit3 } from 'react-icons/fi';
-
-import Rating from '@components/common/Rating/Rating';
-import Button from '@components/common/Button/Button';
+import { FiThumbsUp, FiCheckCircle, FiStar, FiEdit3, FiX } from 'react-icons/fi';
+import Rating from '../common/Rating/Rating';
 import {
   addReview,
   buildSeedReviews,
   selectUserReviews,
   summarizeReviews,
   formatReviewDate,
-} from '@store/slices/reviewSlice';
-
-const reviewSchema = yup.object({
-  author: yup.string().trim().required('Your name is required').max(60, 'Keep it under 60 characters'),
-  rating: yup.number().required('Pick a rating').min(1, 'Pick a rating'),
-  title: yup.string().trim().required('Add a short headline').max(80, 'Keep the headline under 80 characters'),
-  body: yup.string().trim().required('Tell us about your experience').max(1000, 'Keep the review under 1000 characters'),
-});
+} from '../../store/slices/reviewSlice';
 
 const SORTS = [
   { id: 'recent', label: 'Most recent' },
@@ -43,6 +31,8 @@ const ProductReviews = ({ product, className = '' }) => {
   const [sort, setSort] = useState('recent');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [votedIds, setVotedIds] = useState([]);
+  const [formValues, setFormValues] = useState({ author: '', rating: 0, title: '', body: '' });
+  const [formErrors, setFormErrors] = useState({});
 
   const reviews = useMemo(
     () => [...userReviews, ...buildSeedReviews(product.id)],
@@ -59,40 +49,29 @@ const ProductReviews = ({ product, className = '' }) => {
     return list;
   }, [reviews, sort]);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(reviewSchema),
-    mode: 'onChange',
-    defaultValues: { author: '', rating: 0, title: '', body: '' },
-  });
+  const validate = () => {
+    const errs = {};
+    if (!formValues.author.trim()) errs.author = 'Your name is required';
+    if (!formValues.rating) errs.rating = 'Please select a rating';
+    if (!formValues.title.trim()) errs.title = 'A headline is required';
+    if (!formValues.body.trim()) errs.body = 'Tell us about your experience';
+    return errs;
+  };
 
-  const ratingValue = watch('rating');
-
-  const onSubmit = (values) => {
-    dispatch(
-      addReview({
-        productId: product.id,
-        author: values.author,
-        rating: values.rating,
-        title: values.title,
-        body: values.body,
-        verified: false,
-      })
-    );
-    toast.success('Thanks â€” your review is live');
-    reset({ author: values.author, rating: 0, title: '', body: '' });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setFormErrors(errs); return; }
+    dispatch(addReview({ productId: product.id, ...formValues }));
+    toast.success('Thanks — your review is live');
+    setFormValues({ author: '', rating: 0, title: '', body: '' });
+    setFormErrors({});
     setIsFormOpen(false);
   };
 
-  const handleVote = (reviewId) => {
-    if (votedIds.includes(reviewId)) return;
-    setVotedIds((ids) => [...ids, reviewId]);
+  const change = (field) => (e) => {
+    setFormValues((prev) => ({ ...prev, [field]: e.target.value }));
+    if (formErrors[field]) setFormErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   return (
@@ -101,107 +80,61 @@ const ProductReviews = ({ product, className = '' }) => {
         <h3 id="reviews-heading" className="text-xl md:text-2xl font-secondary font-semibold text-primary">
           Customer Reviews
         </h3>
-        <Button
+        <button
           type="button"
-          variant="secondary"
-          size="md"
-          onClick={() => setIsFormOpen((open) => !open)}
-          leftIcon={<FiEdit3 className="w-4 h-4" />}
+          className="btn btn-secondary btn-md inline-flex items-center gap-2"
+          onClick={() => setIsFormOpen((o) => !o)}
         >
-          {isFormOpen ? 'Close form' : 'Write a review'}
-        </Button>
+          {isFormOpen ? <FiX className="w-4 h-4" aria-hidden="true" /> : <FiEdit3 className="w-4 h-4" aria-hidden="true" />}
+          {isFormOpen ? 'Close' : 'Write a review'}
+        </button>
       </div>
 
       {isFormOpen && (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-          className="card p-6 mb-8"
-          aria-label="Write a review"
-        >
+        <form onSubmit={handleSubmit} noValidate className="card p-6 mb-8" aria-label="Write a review">
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-primary mb-1" htmlFor="review-author">
-                Your name
-              </label>
-              <input
-                id="review-author"
-                type="text"
-                placeholder="Ananya Sharma"
-                className="input-field"
-                {...register('author')}
-              />
-              {errors.author?.message && (
-                <p className="mt-1 text-sm text-error">{errors.author.message}</p>
-              )}
+              <label htmlFor="review-author" className="block text-sm font-medium text-primary mb-1">Your name</label>
+              <input id="review-author" type="text" value={formValues.author} onChange={change('author')} className="input-field w-full" placeholder="Your name" />
+              {formErrors.author && <p className="mt-1 text-sm text-error">{formErrors.author}</p>}
             </div>
-
             <div>
               <span className="block text-sm font-medium text-primary mb-1">Your rating</span>
               <Rating
-                value={ratingValue || 0}
+                value={formValues.rating}
                 max={5}
                 size="lg"
                 readonly={false}
-                ariaLabel="Your rating"
-                onChange={(value) => setValue('rating', value, { shouldValidate: true })}
+                onChange={(v) => { setFormValues((p) => ({ ...p, rating: v })); setFormErrors((p) => ({ ...p, rating: undefined })); }}
               />
-              {errors.rating?.message && (
-                <p className="mt-1 text-sm text-error">{errors.rating.message}</p>
-              )}
+              {formErrors.rating && <p className="mt-1 text-sm text-error">{formErrors.rating}</p>}
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-primary mb-1" htmlFor="review-title">
-              Headline
-            </label>
-            <input
-              id="review-title"
-              type="text"
-              placeholder="Sum it up in a few words"
-              className="input-field"
-              {...register('title')}
-            />
-            {errors.title?.message && (
-              <p className="mt-1 text-sm text-error">{errors.title.message}</p>
-            )}
+            <label htmlFor="review-title" className="block text-sm font-medium text-primary mb-1">Headline</label>
+            <input id="review-title" type="text" value={formValues.title} onChange={change('title')} className="input-field w-full" placeholder="Sum it up in a few words" />
+            {formErrors.title && <p className="mt-1 text-sm text-error">{formErrors.title}</p>}
           </div>
 
           <div className="mb-5">
-            <label className="block text-sm font-medium text-primary mb-1" htmlFor="review-body">
-              Your review
-            </label>
-            <textarea
-              id="review-body"
-              rows={4}
-              placeholder="What did you like or dislike? How is the fit and quality?"
-              className="input-field resize-y"
-              {...register('body')}
-            />
-            {errors.body?.message && (
-              <p className="mt-1 text-sm text-error">{errors.body.message}</p>
-            )}
+            <label htmlFor="review-body" className="block text-sm font-medium text-primary mb-1">Your review</label>
+            <textarea id="review-body" rows={4} value={formValues.body} onChange={change('body')} className="input-field w-full resize-y" placeholder="What did you like or dislike?" />
+            {formErrors.body && <p className="mt-1 text-sm text-error">{formErrors.body}</p>}
           </div>
 
-          <Button type="submit" variant="primary" size="md" loading={isSubmitting}>
-            Submit review
-          </Button>
+          <button type="submit" className="btn btn-primary btn-md">Submit review</button>
         </form>
       )}
 
       <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1 min-w-0">
+        <div className="lg:col-span-1">
           <div className="card p-6">
             <div className="flex items-end gap-4">
-              <span className="text-5xl font-secondary font-bold text-primary leading-none">
-                {summary.average}
-              </span>
+              <span className="text-5xl font-secondary font-bold text-primary leading-none">{summary.average}</span>
               <div className="pb-1">
                 <Rating value={summary.average} max={5} size="sm" readonly />
-                <p className="text-sm text-ink-soft mt-1">
-                  {summary.count} review{summary.count === 1 ? '' : 's'}
-                </p>
+                <p className="text-sm text-secondary mt-1">{summary.count} review{summary.count === 1 ? '' : 's'}</p>
               </div>
             </div>
 
@@ -211,50 +144,38 @@ const ProductReviews = ({ product, className = '' }) => {
                 const percent = summary.count ? Math.round((count / summary.count) * 100) : 0;
                 return (
                   <div key={star} className="flex items-center gap-3">
-                    <dt className="flex items-center gap-1 text-sm text-ink-soft w-9 shrink-0">
-                      {star}
-                      <FiStar className="w-3.5 h-3.5 text-secondary" aria-hidden="true" />
+                    <dt className="flex items-center gap-1 text-sm text-secondary w-9 shrink-0">
+                      {star}<FiStar className="w-3.5 h-3.5 text-yellow-400" aria-hidden="true" />
                     </dt>
                     <dd className="flex-1 flex items-center gap-3">
                       <div className="flex-1 h-1.5 rounded-full bg-neutral-200 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-secondary-400 to-secondary-600"
-                          style={{ width: `${percent}%` }}
-                        />
+                        <div className="h-full rounded-full bg-yellow-400" style={{ width: `${percent}%` }} />
                       </div>
-                      <span className="text-xs text-ink-soft w-9 text-right">{percent}%</span>
+                      <span className="text-xs text-secondary w-9 text-right">{percent}%</span>
                     </dd>
                   </div>
                 );
               })}
             </dl>
-
-            <p className="text-sm text-ink-soft mt-6 pt-4 border-t border-neutral-100">
-              <span className="font-semibold text-primary">{summary.recommended}%</span> of buyers
-              rated this 4 stars or higher.
+            <p className="text-sm text-secondary mt-6 pt-4 border-t border-neutral-100">
+              <span className="font-semibold text-primary">{summary.recommended}%</span> rated 4★ or higher
             </p>
           </div>
         </div>
 
-        <div className="lg:col-span-2 min-w-0">
+        <div className="lg:col-span-2">
           <div className="flex items-center justify-between gap-4 mb-4">
-            <p className="text-sm text-ink-soft">
-              Showing {summary.count} review{summary.count === 1 ? '' : 's'}
-            </p>
+            <p className="text-sm text-secondary">{summary.count} review{summary.count === 1 ? '' : 's'}</p>
             <div className="flex items-center gap-1" role="group" aria-label="Sort reviews">
-              {SORTS.map((option) => (
+              {SORTS.map((opt) => (
                 <button
-                  key={option.id}
+                  key={opt.id}
                   type="button"
-                  onClick={() => setSort(option.id)}
-                  aria-pressed={sort === option.id}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    sort === option.id
-                      ? 'bg-primary text-white'
-                      : 'text-ink-soft hover:text-primary hover:bg-neutral-100'
-                  }`}
+                  onClick={() => setSort(opt.id)}
+                  aria-pressed={sort === opt.id}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${sort === opt.id ? 'bg-primary text-white' : 'text-secondary hover:text-primary hover:bg-neutral-100'}`}
                 >
-                  {option.label}
+                  {opt.label}
                 </button>
               ))}
             </div>
@@ -266,42 +187,28 @@ const ProductReviews = ({ product, className = '' }) => {
               return (
                 <li key={review.id} className="card p-6">
                   <div className="flex items-start gap-4">
-                    <div
-                      className="w-11 h-11 rounded-full bg-primary-900 text-secondary-200 flex items-center justify-center text-sm font-semibold flex-shrink-0"
-                      aria-hidden="true"
-                    >
+                    <div className="w-11 h-11 rounded-full bg-primary-900 text-secondary-200 flex items-center justify-center text-sm font-semibold flex-shrink-0" aria-hidden="true">
                       {initials(review.author)}
                     </div>
-
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                         <p className="font-medium text-primary">{review.author}</p>
                         {review.verified && (
-                          <span className="inline-flex items-center gap-1 text-xs text-success">
+                          <span className="inline-flex items-center gap-1 text-xs text-green-600">
                             <FiCheckCircle className="w-3.5 h-3.5" aria-hidden="true" />
                             Verified purchase
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-ink-soft mt-0.5">
-                        {formatReviewDate(review.createdAt)}
-                        {review.location ? ` Â· ${review.location}` : ''}
-                      </p>
-
-                      <div className="mt-3">
-                        <Rating value={review.rating} max={5} size="xs" readonly />
-                      </div>
-
-                      <h4 className="font-medium text-primary mt-3">{review.title}</h4>
-                      <p className="text-[0.9375rem] leading-7 text-ink-soft mt-1.5">{review.body}</p>
-
+                      <p className="text-xs text-secondary mt-0.5">{formatReviewDate(review.createdAt)}{review.location ? ` · ${review.location}` : ''}</p>
+                      <div className="mt-2"><Rating value={review.rating} max={5} size="sm" readonly /></div>
+                      <h4 className="font-medium text-primary mt-2">{review.title}</h4>
+                      <p className="text-sm leading-relaxed text-secondary mt-1">{review.body}</p>
                       <button
                         type="button"
-                        onClick={() => handleVote(review.id)}
+                        onClick={() => !hasVoted && setVotedIds((ids) => [...ids, review.id])}
                         disabled={hasVoted}
-                        className={`mt-4 inline-flex items-center gap-2 text-xs font-medium transition-colors ${
-                          hasVoted ? 'text-success' : 'text-ink-soft hover:text-primary'
-                        }`}
+                        className={`mt-3 inline-flex items-center gap-2 text-xs font-medium transition-colors ${hasVoted ? 'text-green-600' : 'text-secondary hover:text-primary'}`}
                       >
                         <FiThumbsUp className="w-4 h-4" aria-hidden="true" />
                         {hasVoted ? 'Marked helpful' : 'Helpful'}
