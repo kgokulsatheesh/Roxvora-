@@ -1,6 +1,7 @@
 import HeroSection from "../../../components/home/HeroSection";
 import FeaturedCollections from "../../../components/home/FeaturedCollections";
-import { NewArrivals, BestSellers } from "../../../components/home/ProductSection";
+import BestSellers from "../../../components/home/BestSellers";
+import NewArrivals from "../../../components/home/NewArrivals";
 import CategoryShowcase from "../../../components/home/CategoryShowcase";
 import PromotionalBanner from "../../../components/home/PromotionalBanner";
 import BrandStory from "../../../components/home/BrandStory";

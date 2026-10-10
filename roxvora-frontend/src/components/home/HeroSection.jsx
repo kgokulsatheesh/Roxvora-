@@ -1,43 +1,61 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Box, Container, Typography, Button, IconButton } from '@mui/material';
 import { FiArrowRight, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-
-import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DEFAULT_SLIDES = [
   {
     id: 1,
-    eyebrow: 'The Spring Edit',
-    title: 'Spring Collection 2026',
-    description: 'Fresh silhouettes and lightweight fabrics for the new season. Dresses, tops and accessories.',
+    eyebrow: 'The Spring Edit 2026',
+    title: 'Timeless Elegance Redefined',
+    description: 'Fresh architectural silhouettes and lightweight Italian fabrics crafted for the modern wardrobe.',
     image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&q=80',
-    ctaText: 'Shop Now',
+    ctaText: 'Discover Collection',
     ctaLink: '/shop/new',
   },
   {
     id: 2,
-    eyebrow: 'Warm Weather',
-    title: 'Summer Essentials',
-    description: 'Breathable linens, sun-ready shades and easy fits crafted for long summer days.',
+    eyebrow: 'Warm Weather Atelier',
+    title: 'Effortless Summer Sophistication',
+    description: 'Breathable pure linens, sun-kissed neutrals, and fluid drapes designed for long sunlit days.',
     image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1920&q=80',
-    ctaText: 'Explore',
+    ctaText: 'Explore Essentials',
     ctaLink: '/shop/women',
   },
   {
     id: 3,
-    eyebrow: 'Season Sale',
-    title: 'Up to 50% Off',
-    description: 'Complete your look with bags, jewellery and accessories at reduced prices.',
+    eyebrow: 'Private Seasonal Privilege',
+    title: 'Exquisite Curated Reductions',
+    description: 'Acquire signature handcrafted leather accessories, fine jewellery, and seasonal pieces at exceptional value.',
     image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=1920&q=80',
-    ctaText: 'Shop Sale',
+    ctaText: 'Access Privilege',
     ctaLink: '/shop/sale',
+  },
+  {
+    id: 4,
+    eyebrow: 'Evening & Occasion',
+    title: 'Captivating Nightfall Couture',
+    description: 'Make an unforgettable impression with rich textures, shimmering embroidery, and dramatic floor-sweeping cuts.',
+    image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=1920&q=80',
+    ctaText: 'Shop Eveningwear',
+    ctaLink: '/shop/evening',
+  },
+  {
+    id: 5,
+    eyebrow: 'Tailored Mastery',
+    title: 'Modern Power & Precision',
+    description: 'Sharp blazers, structured trousers, and immaculate tailoring engineered for effortless authority.',
+    image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=1920&q=80',
+    ctaText: 'Explore Tailoring',
+    ctaLink: '/shop/tailored',
   },
 ];
 
 const HeroSection = ({
   slides = DEFAULT_SLIDES,
   autoPlay = true,
-  autoPlayInterval = 6000,
+  autoPlayInterval = 3000,
   showArrows = true,
   showIndicators = true,
   className = '',
@@ -63,40 +81,67 @@ const HeroSection = ({
     []
   );
 
-  // Restart the autoplay countdown after any manual navigation.
   const markInteraction = useCallback(() => {
     setAutoplayKey((key) => key + 1);
   }, []);
 
-  useEffect(() => {
-    isFocusPausedRef.current = isFocusPaused;
-  }, [isFocusPaused]);
+  // useEffect(() => {
+  //   isFocusPausedRef.current = isFocusPaused;
+  // }, [isFocusPaused]);
 
-  useEffect(() => {
-    if (!autoPlay) return undefined;
-    const id = setInterval(() => {
-      if (document.hidden || isFocusPausedRef.current) return;
-      paginate(1);
-    }, autoPlayInterval);
-    return () => clearInterval(id);
-  }, [autoPlay, autoPlayInterval, paginate, autoplayKey]);
+  // useEffect(() => {
+  //   if (!autoPlay) return undefined;
+  //   const id = setInterval(() => {
+  //     if (document.hidden || isFocusPausedRef.current) return;
+  //     paginate(1);
+  //   }, autoPlayInterval);
+  //   return () => clearInterval(id);
+  // }, [autoPlay, autoPlayInterval, paginate, autoplayKey]);
 
   const active = slides[currentSlide];
 
+  // Silky smooth transition animation curve
   const slideVariants = {
-    enter: { opacity: 0, scale: 1.08 },
-    center: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } },
-    exit: { opacity: 0, scale: 1.02, transition: { duration: 0.5, ease: 'easeIn' } },
+    enter: (dir) => ({
+      x: dir > 0 ? '100%' : '-100%',
+      scale: 1.05,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] },
+    },
+    exit: (dir) => ({
+      x: dir < 0 ? '100%' : '-100%',
+      scale: 1.02,
+      opacity: 0,
+      transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] },
+    }),
   };
 
-  const contentVariants = {
-    enter: { opacity: 0, y: 28 },
+  const containerVariants = {
+    enter: { opacity: 0 },
+    center: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+      },
+    },
+    exit: { opacity: 0, transition: { duration: 0.3 } },
+  };
+
+  const itemVariants = {
+    enter: { opacity: 0, y: 30, filter: 'blur(4px)' },
     center: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] },
+      filter: 'blur(0px)',
+      transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
     },
-    exit: { opacity: 0, y: -18, transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: -15, filter: 'blur(4px)', transition: { duration: 0.3 } },
   };
 
   const onPointerDown = (e) => {
@@ -131,7 +176,6 @@ const HeroSection = ({
     drag.current = { active: false, x: 0, y: 0, horizontal: false };
   };
 
-  // Swallow the click that a swipe leaves behind, so a swipe never opens a link.
   const onClickCapture = (e) => {
     if (!suppressClick.current) return;
     e.preventDefault();
@@ -139,10 +183,11 @@ const HeroSection = ({
   };
 
   return (
-    <section
-      className={`relative overflow-hidden bg-primary-900 ${className}`}
+    <Box
+      component="section"
+      className={`relative overflow-hidden bg-[#111] ${className}`}
       style={{ touchAction: 'pan-y' }}
-      aria-label="Featured collections"
+      aria-label="Luxury Featured Collections Carousel"
       aria-roledescription="carousel"
       onFocusCapture={() => setIsFocusPaused(true)}
       onBlurCapture={() => setIsFocusPaused(false)}
@@ -152,7 +197,10 @@ const HeroSection = ({
       onPointerCancel={onPointerCancel}
       onClickCapture={onClickCapture}
     >
-      <div className="relative h-[78vh] min-h-[520px] max-h-[820px] w-full">
+      {/* Expanded height bounds to allow full panoramic banner view on desktops */}
+      <Box className="relative h-[85vh] sm:h-[88vh] min-h-[620px] max-h-[980px] w-full flex items-center">
+        
+        {/* Background Image Carousel Slider */}
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
             key={active.id}
@@ -161,94 +209,126 @@ const HeroSection = ({
             initial="enter"
             animate="center"
             exit="exit"
-            className="absolute inset-0"
-            style={{ backgroundImage: `url(${active.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+            className="absolute inset-0 z-0 will-change-transform"
+            style={{
+              backgroundImage: `url(${active.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+            }}
             role="group"
             aria-roledescription="slide"
             aria-label={`${currentSlide + 1} of ${slides.length}: ${active.title}`}
           />
         </AnimatePresence>
 
-        {/* Cinematic overlays — dark enough for reliable contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-900/55 to-primary-900/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-900/80 via-transparent to-primary-900/30" />
+        {/* Seamless Soft Vignette (Balanced for full image visibility and pristine text readability) */}
+        <Box className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 w-full lg:w-2/3" />
+        <Box className="absolute inset-0 bg-black/20 z-10" />
 
-        <div className="relative h-full container mx-auto px-4 md:px-8 flex items-center">
-          <div className="w-full max-w-2xl text-white">
+        {/* Fully Responsive Fluid Container */}
+        <Container maxWidth={false} className="relative z-20 h-full flex items-center px-6 sm:px-12 lg:px-24 max-w-[1536px] mx-auto">
+          <Box className="w-full max-w-2xl text-left py-12">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
                 key={active.id}
                 custom={direction}
-                variants={contentVariants}
+                variants={containerVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
+                className="flex flex-col items-start"
               >
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 border border-secondary/50 rounded-full text-xs font-semibold uppercase tracking-widest text-secondary-200 backdrop-blur-sm mb-6">
-                  {active.eyebrow}
-                </span>
-
-                <h1 className="text-4xl md:text-5xl lg:text-7xl font-secondary font-semibold leading-[1.05] mb-5 text-white">
-                  {active.title}
-                </h1>
-
-                <p className="text-base md:text-lg text-white/75 mb-9 max-w-lg leading-relaxed">
-                  {active.description}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link
-                    to={active.ctaLink}
-                    className="btn btn-primary btn-lg group inline-flex items-center gap-2"
+                {/* Luxury Gold-Tinted Eyebrow Badge */}
+                <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
+                  <Typography
+                    component="span"
+                    className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-black/50 border border-[#D4AF37]/50 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#E5C568] backdrop-blur-md shadow-2xl"
                   >
-                    {active.ctaText}
-                    <FiArrowRight
-                      className="w-5 h-5 transition-transform group-hover:translate-x-1"
-                      aria-hidden="true"
-                    />
-                  </Link>
-                  <Link
-                    to="/shop"
-                    className="btn btn-outline btn-lg !border-white/40 !text-white hover:!bg-white hover:!text-primary-900"
+                    {active.eyebrow}
+                  </Typography>
+                </motion.div>
+
+                {/* Bold Fluid Responsive Heading */}
+                <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
+                  <Typography
+                    variant="h1"
+                    className="font-serif font-bold text-white drop-shadow-md tracking-tight"
+                    style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.8rem)', lineHeight: '1.08' }}
                   >
-                    Browse All
-                  </Link>
-                </div>
+                    {active.title}
+                  </Typography>
+                </motion.div>
+
+                {/* Refined Description */}
+                <motion.div variants={itemVariants} className="mb-8 sm:mb-10">
+                  <Typography
+                    variant="body1"
+                    className="text-sm sm:text-base lg:text-lg text-neutral-200/95 max-w-xl leading-relaxed font-light tracking-wide drop-shadow"
+                  >
+                    {active.description}
+                  </Typography>
+                </motion.div>
+
+                {/* Responsive Action Buttons */}
+                <motion.div variants={itemVariants} className="w-full sm:w-auto">
+                  <Box className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
+                    <Button
+                      component={Link}
+                      to={active.ctaLink}
+                      variant="contained"
+                      size="large"
+                      className="bg-[#D4AF37] hover:bg-[#C59B27] text-black px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                    >
+                      {active.ctaText}
+                      <FiArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                    
+                    <Button
+                      component={Link}
+                      to="/shop"
+                      variant="outlined"
+                      size="large"
+                      className="border-white/50 text-white hover:bg-white hover:text-black px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 flex items-center justify-center"
+                    >
+                      View Collections
+                    </Button>
+                  </Box>
+                </motion.div>
               </motion.div>
             </AnimatePresence>
-          </div>
-        </div>
+          </Box>
+        </Container>
 
+        {/* Navigation Arrows */}
         {showArrows && (
           <>
-            <button
-              type="button"
-              className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 btn btn-icon-lg rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20 transition-colors inline-flex"
+            <IconButton
               onClick={() => {
                 paginate(-1);
                 markInteraction();
               }}
               aria-label="Previous slide"
+              className="absolute left-6 lg:left-12 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all p-3.5 hidden md:flex shadow-xl"
             >
-              <FiChevronLeft className="w-5 h-5" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 btn btn-icon-lg rounded-full bg-white/10 text-white border border-white/20 backdrop-blur-sm hover:bg-white/20 transition-colors inline-flex"
+              <FiChevronLeft className="w-5 h-5" />
+            </IconButton>
+            <IconButton
               onClick={() => {
                 paginate(1);
                 markInteraction();
               }}
               aria-label="Next slide"
+              className="absolute right-6 lg:right-12 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all p-3.5 hidden md:flex shadow-xl"
             >
-              <FiChevronRight className="w-5 h-5" aria-hidden="true" />
-            </button>
+              <FiChevronRight className="w-5 h-5" />
+            </IconButton>
           </>
         )}
 
+        {/* Indicators */}
         {showIndicators && (
-          <div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3"
+          <Box
+            className="absolute bottom-6 sm:bottom-8 left-6 sm:left-12 lg:left-24 z-30 flex items-center gap-2.5 sm:gap-3"
             role="tablist"
             aria-label="Choose slide"
           >
@@ -263,17 +343,17 @@ const HeroSection = ({
                   goTo(index);
                   markInteraction();
                 }}
-                className={`h-1 rounded-full transition-all duration-500 ${
+                className={`h-1.5 rounded-full transition-all duration-700 ${
                   index === currentSlide
-                    ? 'w-10 bg-secondary'
-                    : 'w-5 bg-white/40 hover:bg-white/70'
+                    ? 'w-10 sm:w-12 bg-[#D4AF37]'
+                    : 'w-3 sm:w-4 bg-white/30 hover:bg-white/60'
                 }`}
               />
             ))}
-          </div>
+          </Box>
         )}
-      </div>
-    </section>
+      </Box>
+    </Box>
   );
 };
 

@@ -1,107 +1,122 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowRight } from 'react-icons/fi';
-
+import { FiArrowUpRight } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const DEFAULT_BANNERS = [
   {
     id: 1,
-    title: 'Free Shipping',
-    description: 'On all orders over \u20B9999',
-    image: 'https://images.unsplash.com/photo-1586204369964-d1f965a9e6c8?w=800&q=80',
-    ctaText: 'Shop Now',
+    title: 'Complimentary Global Shipping',
+    subtitle: 'Exclusive Privilege',
+    description: 'On all bespoke and curated orders exceeding ₹999.',
+    image: 'https://images.unsplash.com/photo-1586204369964-d1f965a9e6c8?w=1200&q=80',
+    ctaText: 'Explore Lookbook',
     ctaLink: '/shop',
-    background: 'var(--gradient-ink)',
+    featured: true, // Makes this card larger and cinematic
   },
   {
     id: 2,
-    title: 'Members Get More',
-    description: 'Earn 2x points on every order',
+    title: 'Privé Membership Tier',
+    subtitle: 'Earn 2X Rewards',
+    description: 'Unlock private styling sessions and double loyalty points on every acquisition.',
     image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
     ctaText: 'Join Free',
     ctaLink: '/register',
-    background: 'var(--gradient-gold)',
+    featured: false,
   },
   {
     id: 3,
-    title: 'Season Sale',
-    description: 'Up to 50% off selected styles',
+    title: 'Architectural Season Sale',
+    subtitle: 'Limited Archive',
+    description: 'Up to 50% off selected master tailoring and seasonal drapes.',
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80',
-    ctaText: 'View Sale',
+    ctaText: 'View Archive',
     ctaLink: '/shop/sale',
-    background: 'var(--color-secondary-dark)',
+    featured: false,
   },
 ];
 
 const PromotionalBanner = ({ banners = DEFAULT_BANNERS, className = '' }) => {
   return (
-    <section className={`py-16 md:py-20 ${className}`} aria-label="Promotional offers">
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className={`py-24 md:py-36 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden ${className}`} aria-label="Promotional offers">
+      <div className="container mx-auto px-6 md:px-12 max-w-[1536px]">
+        
+        {/* Editorial Section Intro */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300/60 pb-10 mb-14 gap-6">
+          <div>
+            <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] mb-3">
+              Privileged Access
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-neutral-950">
+              Curated Advantages
+            </h2>
+          </div>
+          <p className="text-neutral-600 text-sm sm:text-base font-light max-w-sm">
+            Designed for those who appreciate uncompromising craftsmanship and elevated wardrobe experiences.
+          </p>
+        </div>
+
+        {/* Asymmetrical High-End Editorial Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
           {banners.map((banner, index) => {
-            const onGold = banner.background === 'var(--gradient-gold)';
+            const isFeatured = banner.featured;
 
             return (
               <motion.article
                 key={banner.id}
-                initial={{ y: 28, opacity: 0 }}
+                initial={{ y: 35, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-2xl h-72 group shadow-sm hover:shadow-xl transition-shadow duration-300"
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className={`relative overflow-hidden rounded-[2.5rem] group shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-700 ${
+                  isFeatured ? 'lg:col-span-7 h-[450px] md:h-[520px]' : 'lg:col-span-5 h-[240px] md:h-[246px]'
+                }`}
               >
                 <Link
                   to={banner.ctaLink}
-                  className="absolute inset-0 h-full w-full flex flex-col justify-end p-6 md:p-8"
-                  style={{ background: banner.background }}
-                  aria-label={`${banner.title} \u2014 ${banner.ctaText}`}
+                  className="absolute inset-0 h-full w-full flex flex-col justify-end p-8 sm:p-10 z-20 cursor-pointer"
+                  aria-label={`${banner.title} — ${banner.ctaText}`}
                 >
+                  {/* Background Image with Cinematic Zoom & Vignette */}
                   {banner.image && (
                     <img
                       src={banner.image}
-                      alt=""
-                      className="absolute inset-0 w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 opacity-25"
+                      alt={banner.title}
+                      className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-1000 ease-out"
                       loading="lazy"
-                      aria-hidden="true"
                     />
                   )}
-                  <span
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ background: 'linear-gradient(to top, rgba(10,10,11,0.55), transparent 70%)' }}
-                    aria-hidden="true"
-                  />
 
-                  <span className="relative block">
-                    <span
-                      className={`block text-2xl md:text-3xl font-secondary font-semibold mb-2 leading-tight ${
-                        onGold ? 'text-primary-900' : 'text-white'
-                      }`}
-                    >
+                  {/* Deep Luxury Gradient Overlay for High Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1816]/95 via-[#1A1816]/40 to-transparent transition-opacity duration-500" />
+
+                  {/* Content Container */}
+                  <div className="relative z-10 flex flex-col items-start justify-end h-full">
+                    <span className="px-3.5 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-[#F3E5AB] mb-4 border border-white/20">
+                      {banner.subtitle}
+                    </span>
+
+                    <h3 className={`font-serif font-bold text-white tracking-tight mb-2 ${isFeatured ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'}`}>
                       {banner.title}
-                    </span>
-                    <span
-                      className={`block text-sm md:text-base mb-5 ${
-                        onGold ? 'text-primary-800/80' : 'text-white/80'
-                      }`}
-                    >
+                    </h3>
+
+                    <p className={`text-neutral-300 font-light leading-relaxed mb-6 line-clamp-2 ${isFeatured ? 'text-sm sm:text-base max-w-lg' : 'text-xs sm:text-sm'}`}>
                       {banner.description}
+                    </p>
+
+                    <span className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-white text-neutral-950 group-hover:bg-[#D4AF37] group-hover:text-black text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl">
+                      <span>{banner.ctaText}</span>
+                      <span className="w-5 h-5 rounded-full bg-neutral-950 text-white group-hover:bg-black flex items-center justify-center transition-transform group-hover:rotate-45">
+                        <FiArrowUpRight className="w-3 h-3" />
+                      </span>
                     </span>
-                    <span
-                      className={`btn btn-md w-fit inline-flex items-center gap-2 ${
-                        onGold ? 'btn-primary' : 'btn-secondary !border-white/40 !text-white'
-                      }`}
-                    >
-                      {banner.ctaText}
-                      <FiArrowRight
-                        className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </span>
+                  </div>
                 </Link>
               </motion.article>
             );
           })}
+
         </div>
       </div>
     </section>
