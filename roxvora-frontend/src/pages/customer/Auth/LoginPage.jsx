@@ -1,28 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../../store/slices/authSlice';
 import AuthLayout from '../../../components/auth/AuthLayout';
 import LoginForm from '../../../components/auth/LoginForm';
+import { useAuth } from '../../../hooks/useAuth';
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = async ({ email }) => {
+  const handleSubmit = async (credentials) => {
     setIsLoading(true);
-    // Replace with the login API call once the backend is available.
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    // Never keep credentials in Redux state.
-    dispatch(
-      setCredentials({
-        user: { email, firstName: 'Aditi', lastName: 'Sharma' },
-        token: 'demo-token',
-      })
-    );
-    setIsLoading(false);
-    navigate('/account', { replace: true });
+    try {
+      await login(credentials);
+      navigate('/account', { replace: true });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

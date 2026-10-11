@@ -18,9 +18,8 @@ export const ProtectedRoute = ({ children }) => {
 };
 
 /**
- * AdminRoute — redirects non-admin users.
- * In dev mode (no backend), allows access if authenticated.
- * Once a real role system exists, check user.role === 'admin'.
+ * AdminRoute — redirects unauthenticated users and denies users without an
+ * explicit admin role. Server-side authorization must protect admin APIs too.
  */
 export const AdminRoute = ({ children }) => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -31,9 +30,7 @@ export const AdminRoute = ({ children }) => {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    // If the user is authenticated but not an admin, redirect to home.
-    // During development (no backend), skip the role check if user has no role set.
-    if (user && user.role && user.role !== 'admin') {
+    if (user?.role !== 'admin') {
         return <Navigate to="/" replace />;
     }
 
