@@ -2,31 +2,48 @@ const TOKEN_KEY = 'roxvora_auth_token';
 const REFRESH_TOKEN_KEY = 'roxvora_refresh_token';
 const USER_KEY = 'roxvora_user';
 
+const getStorage = () => window.sessionStorage;
+
+const clearLegacyItem = (key) => {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Legacy localStorage may be unavailable; never use it as a token fallback.
+  }
+};
+
 export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
+  clearLegacyItem(TOKEN_KEY);
+  return getStorage().getItem(TOKEN_KEY);
 };
 
 export const setToken = (token) => {
-  localStorage.setItem(TOKEN_KEY, token);
+  getStorage().setItem(TOKEN_KEY, token);
+  clearLegacyItem(TOKEN_KEY);
 };
 
 export const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(REFRESH_TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+  getStorage().removeItem(TOKEN_KEY);
+  getStorage().removeItem(REFRESH_TOKEN_KEY);
+  getStorage().removeItem(USER_KEY);
+  clearLegacyItem(TOKEN_KEY);
+  clearLegacyItem(REFRESH_TOKEN_KEY);
+  clearLegacyItem(USER_KEY);
 };
 
 export const getRefreshToken = () => {
-  return localStorage.getItem(REFRESH_TOKEN_KEY);
+  clearLegacyItem(REFRESH_TOKEN_KEY);
+  return getStorage().getItem(REFRESH_TOKEN_KEY);
 };
 
 export const setRefreshToken = (token) => {
-  localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  getStorage().setItem(REFRESH_TOKEN_KEY, token);
+  clearLegacyItem(REFRESH_TOKEN_KEY);
 };
 
 export const getUser = () => {
   try {
-    const user = localStorage.getItem(USER_KEY);
+    const user = getStorage().getItem(USER_KEY);
     return user ? JSON.parse(user) : null;
   } catch {
     return null;
@@ -34,7 +51,8 @@ export const getUser = () => {
 };
 
 export const setUser = (user) => {
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  getStorage().setItem(USER_KEY, JSON.stringify(user));
+  clearLegacyItem(USER_KEY);
 };
 
 export const isTokenExpired = (token) => {

@@ -2,13 +2,11 @@
 @import './variables.css';
 @import './animations.css';
 @import './responsive.css';
+@import "tailwindcss";
 
 /* Tailwind preflight lands in the `base` cascade layer. Our own @layer base
    block below appears later in source order, so the design system wins on ties
    while Tailwind's reset still provides sane defaults. */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
   html {
