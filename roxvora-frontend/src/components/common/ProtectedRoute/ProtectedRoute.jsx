@@ -1,33 +1,17 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated, selectUser } from '../../../store/slices/authSlice';
+import { selectIsAuthenticated, selectUser } from '@store/slices/authSlice';
 
 /**
- * ProtectedRoute — redirects unauthenticated users to /login.
- * Preserves the intended destination so the login page can redirect back after auth.
- */
-export const ProtectedRoute = ({ children }) => {
-    const isAuthenticated = useSelector(selectIsAuthenticated);
-    const location = useLocation();
-
-    if (!isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    return children;
-};
-
-/**
- * AdminRoute — redirects unauthenticated users and denies users without an
- * explicit admin role. Server-side authorization must protect admin APIs too.
+ * AdminRoute — only allows access if the user is authenticated and has the admin role.
+ * Redirects unauthenticated users to /login and non-admins to /.
  */
 export const AdminRoute = ({ children }) => {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const user = useSelector(selectUser);
-    const location = useLocation();
 
     if (!isAuthenticated) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+        return <Navigate to="/login" replace />;
     }
 
     if (user?.role !== 'admin') {
@@ -37,4 +21,29 @@ export const AdminRoute = ({ children }) => {
     return children;
 };
 
-export default ProtectedRoute;
+/**
+ * ProtectedRoute — only allows access if the user is authenticated.
+ * Redirects unauthenticated users to /login.
+ */
+export const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+};
+
+/**
+ * PublicRoute — redirects authenticated users away from public-only pages (e.g. login).
+ */
+export const PublicRoute = ({ children, redirectTo = '/' }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+
+    if (isAuthenticated) {
+        return <Navigate to={redirectTo} replace />;
+    }
+
+    return children;
+};

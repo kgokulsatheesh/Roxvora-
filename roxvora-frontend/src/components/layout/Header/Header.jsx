@@ -44,17 +44,18 @@ const Header = () => {
   return (
     <header
       ref={headerRef}
-      className={`sticky top-0 left-0 right-0 z-[900] transition-all duration-300 ${isScrolled
+      className={`sticky top-0 left-0 right-0 z-[900] transition-all duration-300 ${
+        isScrolled
           ? 'bg-white shadow-md border-b border-neutral-200'
           : 'bg-white border-b border-neutral-200'
-        }`}
+      }`}
       role="banner"
     >
       <TopBar />
 
       <div className="relative">
         <nav
-          className="flex items-center justify-between container mx-auto px-4 py-4 sm:px-6 lg:px-8"
+          className="flex items-center justify-between container mx-auto px-4 py-4 lg:px-8"
           role="navigation"
           aria-label="Main navigation"
         >

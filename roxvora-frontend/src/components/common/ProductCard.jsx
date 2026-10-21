@@ -16,8 +16,8 @@ import {
   ArrowForward,
 } from "@mui/icons-material";
 import Reveal from "./Reveal";
-import { formatPrice } from "../../utils/formatCurrency";
-import { useCart } from "../../hooks/useCart";
+import { formatPrice } from "../../data/products";
+import { useCart } from "../../context/CartContext";
 
 /* =========================================================
    COLOURS
@@ -52,24 +52,17 @@ export default function ProductCard({ product, index = 0, reveal = true }) {
   /* Navigate to product detail */
   const goToProduct = () => navigate(`/product/${product.id}`);
 
-  /* Quick add — picks first size & first color, then goes to cart */
+  /* Quick add — picks first size & first color, then goes to bag */
   const handleQuickAdd = (e) => {
     e.stopPropagation();
     const size = product.sizes?.[2] ?? product.sizes?.[0] ?? "";
     const color = product.colors?.[0]?.name ?? "";
-    addItem({
-      ...product,
-      variantId: `${product.id}-${size}-${color}`,
-      size,
-      color,
-      quantity: 1,
-      image: product.images?.[0] ?? product.image ?? "",
-    });
+    addItem(product, size, color, 1);
 
     /* brief visual feedback before navigating */
     setAddedFeedback(true);
     setTimeout(() => {
-      navigate("/cart");
+      navigate("/bag");
     }, 320);
   };
 
@@ -379,9 +372,9 @@ export default function ProductCard({ product, index = 0, reveal = true }) {
                   width: { xs: 10, sm: 12 },
                   height: { xs: 10, sm: 12 },
                   borderRadius: "50%",
-                  backgroundColor: color.value,
+                  backgroundColor: color.hex,
                   border:
-                    color.value === "#FFFFFF" || color.value === "#FAFAF8"
+                    color.hex === "#FFFFFF" || color.hex === "#FAFAF8"
                       ? "1px solid #CCCCCC"
                       : "1px solid rgba(0,0,0,0.12)",
                   cursor: "pointer",
@@ -444,7 +437,7 @@ export default function ProductCard({ product, index = 0, reveal = true }) {
               },
             }}
           >
-            {addedFeedback ? "ADDED!" : isOutOfStock ? "OUT OF STOCK" : "ADD TO CART"}
+            {addedFeedback ? "ADDED!" : isOutOfStock ? "OUT OF STOCK" : "ADD TO BAG"}
           </Button>
 
           {/* View product */}

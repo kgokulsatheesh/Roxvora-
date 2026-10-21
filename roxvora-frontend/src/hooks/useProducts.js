@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectProducts, selectCategories, selectProductFilters, selectProductPagination, selectProductLoading } from '@store/slices/productSlice';
 import { setProducts, setCategories, setFilters, clearFilters, setPagination } from '@store/slices/productSlice';
-import productApi from '@api/productApi';
+import { productApi } from '@api/productApi';
 
 export const useProducts = () => {
   const dispatch = useDispatch();

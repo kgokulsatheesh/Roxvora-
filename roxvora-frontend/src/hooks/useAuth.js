@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuthenticated, selectUser, selectAuthLoading, selectAuthError } from '@store/slices/authSlice';
 import { setCredentials, logout, clearError } from '@store/slices/authSlice';
 import { authApi } from '@api/authApi';
-import { removeToken, setToken } from '@utils/token';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -13,20 +12,17 @@ export const useAuth = () => {
 
   const login = async (credentials) => {
     const response = await authApi.login(credentials);
-    if (response.data.token) setToken(response.data.token);
     dispatch(setCredentials(response.data));
     return response.data;
   };
 
   const register = async (userData) => {
     const response = await authApi.register(userData);
-    if (response.data.token) setToken(response.data.token);
     dispatch(setCredentials(response.data));
     return response.data;
   };
 
   const logoutUser = () => {
-    removeToken();
     dispatch(logout());
   };
 
