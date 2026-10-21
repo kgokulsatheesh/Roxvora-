@@ -59,16 +59,16 @@ const PromotionalBanner = () => {
 
   return (
     <section className="py-28 md:py-40 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Promotional offers">
-      
+
       {/* Ambient background decoration */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#9A7B2C]/5 blur-[140px] pointer-events-none rounded-full" />
 
-      <div className="container mx-auto px-6 md:px-12 max-w-[1536px] relative z-10">
-        
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between border-b border-neutral-300/60 pb-12 mb-16 gap-8">
           <div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -100,7 +100,7 @@ const PromotionalBanner = () => {
               className={`${card.span} ${card.height} relative rounded-[2.5rem] overflow-hidden group shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_30px_70px_rgba(0,0,0,0.15)] transition-all duration-700 bg-neutral-900`}
             >
               <Link to={card.ctaLink} className="absolute inset-0 z-20 flex flex-col justify-between p-8 sm:p-10 cursor-pointer">
-                
+
                 {/* Top Badge */}
                 <div className="flex justify-between items-center">
                   <span className="px-4 py-1.5 bg-white/20 backdrop-blur-md text-white rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20 shadow-lg">

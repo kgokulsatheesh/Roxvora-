@@ -18,7 +18,7 @@ const CategoryShowcase = ({
 }) => {
   return (
     <section className={`py-16 md:py-24 ${className}`} aria-labelledby="category-showcase-heading">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 id="category-showcase-heading" className="text-3xl md:text-4xl font-secondary font-semibold text-primary mb-4">
             {title}

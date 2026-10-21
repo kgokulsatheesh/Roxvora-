@@ -4,6 +4,253 @@
 @import './responsive.css';
 @import "tailwindcss";
 
+/* ==========================================================================
+   Tailwind v4 @theme — maps design tokens to Tailwind utility classes.
+   In v4, tailwind.config.js is NOT read. All customisation lives here.
+   Static values only inside @theme (no var() references allowed).
+   ========================================================================== */
+@theme {
+  /* ── Breakpoints ───────────────────────────────────────────────────────── */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1400px;
+
+  /* ── Colors: Primary — matte black ────────────────────────────────────── */
+  --color-primary-50: #f0f4f8;
+  --color-primary-100: #d9e2ec;
+  --color-primary-200: #bcccdc;
+  --color-primary-300: #9fb3c8;
+  --color-primary-400: #829ab1;
+  --color-primary-500: #627d98;
+  --color-primary-600: #486581;
+  --color-primary-700: #334e68;
+  --color-primary-800: #243b53;
+  --color-primary-900: #0a0a0b;
+  --color-primary: #0a0a0b;
+  --color-primary-light: #222227;
+  --color-primary-dark: #000000;
+  --color-primary-contrast: #ffffff;
+
+  /* ── Colors: Secondary — champagne gold ───────────────────────────────── */
+  --color-secondary-50: #fff8f0;
+  --color-secondary-100: #ffebd6;
+  --color-secondary-200: #ffd6ad;
+  --color-secondary-300: #ffbc85;
+  --color-secondary-400: #ff9f5c;
+  --color-secondary-500: #ff8533;
+  --color-secondary-600: #e66d1a;
+  --color-secondary-700: #a5834a;
+  --color-secondary-800: #b3420d;
+  --color-secondary-900: #993306;
+  --color-secondary: #c9a86a;
+  --color-secondary-light: #e7d3a3;
+  --color-secondary-dark: #a5834a;
+  --color-secondary-contrast: #0a0a0b;
+
+  /* ── Colors: Accent ───────────────────────────────────────────────────── */
+  --color-accent: #a5834a;
+  --color-accent-light: #d8bd85;
+  --color-accent-dark: #8a6d3c;
+  --color-accent-contrast: #ffffff;
+
+  /* ── Colors: Neutral ──────────────────────────────────────────────────── */
+  --color-neutral-50: #faf8f4;
+  --color-neutral-100: #f2efe9;
+  --color-neutral-200: #e8e3da;
+  --color-neutral-300: #d8d2c6;
+  --color-neutral-400: #b5aea1;
+  --color-neutral-500: #8d8d95;
+  --color-neutral-600: #55555c;
+  --color-neutral-700: #3a3a40;
+  --color-neutral-800: #222227;
+  --color-neutral-900: #111114;
+  --color-neutral-950: #0a0a0a;
+
+  /* ── Colors: Status ───────────────────────────────────────────────────── */
+  --color-success: #3fa66b;
+  --color-success-light: #e6f4ec;
+  --color-success-dark: #2f7d4f;
+
+  --color-warning: #e0a23a;
+  --color-warning-light: #fdf3e2;
+  --color-warning-dark: #b8811f;
+
+  --color-error: #d64545;
+  --color-error-light: #fbeaea;
+  --color-error-dark: #b23434;
+
+  --color-info: #4a86d8;
+  --color-info-light: #e9f1fb;
+  --color-info-dark: #3468ad;
+
+  /* ── Colors: Background ───────────────────────────────────────────────── */
+  --color-background: #f7f4ee;
+  --color-background-paper: #ffffff;
+  --color-background-subtle: #faf8f4;
+  --color-background-muted: #f2efe9;
+  --color-background-dark: #111114;
+  --color-background-darker: #0a0a0b;
+
+  /* ── Typography ────────────────────────────────────────────────────────── */
+  --font-family-sans: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-serif: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --font-family-primary: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-family-secondary: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+
+  /* ── Spacing — full Tailwind default scale ─────────────────────────────── */
+  --spacing-px: 1px;
+  --spacing-0: 0px;
+  --spacing-0_5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-1_5: 0.375rem;
+  --spacing-2: 0.5rem;
+  --spacing-2_5: 0.625rem;
+  --spacing-3: 0.75rem;
+  --spacing-3_5: 0.875rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
+  --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
+  --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-28: 7rem;
+  --spacing-32: 8rem;
+  --spacing-36: 9rem;
+  --spacing-40: 10rem;
+  --spacing-44: 11rem;
+  --spacing-48: 12rem;
+  --spacing-52: 13rem;
+  --spacing-56: 14rem;
+  --spacing-60: 15rem;
+  --spacing-64: 16rem;
+  --spacing-72: 18rem;
+  --spacing-80: 20rem;
+  --spacing-96: 24rem;
+
+  /* ── Border Radius ─────────────────────────────────────────────────────── */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ───────────────────────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(10, 10, 11, 0.06), 0 1px 1px rgba(10, 10, 11, 0.04);
+  --shadow-sm: 0 1px 2px rgba(10, 10, 11, 0.05);
+  --shadow: 0 4px 12px -2px rgba(10, 10, 11, 0.1);
+  --shadow-md: 0 4px 12px -2px rgba(10, 10, 11, 0.1);
+  --shadow-lg: 0 10px 30px -12px rgba(10, 10, 11, 0.25);
+  --shadow-xl: 0 20px 45px -18px rgba(10, 10, 11, 0.35);
+  --shadow-2xl: 0 30px 60px -20px rgba(10, 10, 11, 0.45);
+  --shadow-inner: inset 0 2px 4px rgba(10, 10, 11, 0.06);
+  --shadow-glow-gold: 0 0 0 1px rgba(201, 168, 106, 0.5), 0 10px 40px -10px rgba(201, 168, 106, 0.45);
+
+  /* ── Keyframe animations ───────────────────────────────────────────────── */
+  --animate-fade-in: fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-up: slide-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-down: slide-down 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-in-left: slide-in-left 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-in-right: slide-in-right 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-shimmer: shimmer 1.5s linear infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-32px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(32px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}
+
 /* Tailwind preflight lands in the `base` cascade layer. Our own @layer base
    block below appears later in source order, so the design system wins on ties
    while Tailwind's reset still provides sane defaults. */
@@ -23,27 +270,66 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-family-secondary);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
     color: var(--color-text-primary);
   }
 
-  h1 { font-size: var(--font-size-5xl); }
-  h2 { font-size: var(--font-size-4xl); }
-  h3 { font-size: var(--font-size-3xl); }
-  h4 { font-size: var(--font-size-2xl); }
-  h5 { font-size: var(--font-size-xl); }
-  h6 { font-size: var(--font-size-lg); }
+  h1 {
+    font-size: var(--font-size-5xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-4xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h4 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h5 {
+    font-size: var(--font-size-xl);
+  }
+
+  h6 {
+    font-size: var(--font-size-lg);
+  }
 
   @media (max-width: 768px) {
-    h1 { font-size: var(--font-size-4xl); }
-    h2 { font-size: var(--font-size-3xl); }
-    h3 { font-size: var(--font-size-2xl); }
-    h4 { font-size: var(--font-size-xl); }
-    h5 { font-size: var(--font-size-lg); }
-    h6 { font-size: var(--font-size-base); }
+    h1 {
+      font-size: var(--font-size-4xl);
+    }
+
+    h2 {
+      font-size: var(--font-size-3xl);
+    }
+
+    h3 {
+      font-size: var(--font-size-2xl);
+    }
+
+    h4 {
+      font-size: var(--font-size-xl);
+    }
+
+    h5 {
+      font-size: var(--font-size-lg);
+    }
+
+    h6 {
+      font-size: var(--font-size-base);
+    }
   }
 
   p {
@@ -478,14 +764,45 @@
     font-size: var(--font-size-sm);
   }
 
-  .badge-default { background-color: var(--color-neutral-200); color: var(--color-neutral-600); }
-  .badge-primary { background-color: var(--color-secondary-main); color: var(--color-secondary-contrast); }
-  .badge-secondary { background-color: var(--color-accent-main); color: var(--color-accent-contrast); }
-  .badge-success { background-color: var(--color-success-main); color: var(--color-primary-contrast); }
-  .badge-warning { background-color: var(--color-warning-main); color: var(--color-primary-dark); }
-  .badge-error { background-color: var(--color-error-main); color: var(--color-primary-contrast); }
-  .badge-info { background-color: var(--color-info-main); color: var(--color-primary-contrast); }
-  .badge-outline { background-color: transparent; border: 1px solid currentColor; }
+  .badge-default {
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-600);
+  }
+
+  .badge-primary {
+    background-color: var(--color-secondary-main);
+    color: var(--color-secondary-contrast);
+  }
+
+  .badge-secondary {
+    background-color: var(--color-accent-main);
+    color: var(--color-accent-contrast);
+  }
+
+  .badge-success {
+    background-color: var(--color-success-main);
+    color: var(--color-primary-contrast);
+  }
+
+  .badge-warning {
+    background-color: var(--color-warning-main);
+    color: var(--color-primary-dark);
+  }
+
+  .badge-error {
+    background-color: var(--color-error-main);
+    color: var(--color-primary-contrast);
+  }
+
+  .badge-info {
+    background-color: var(--color-info-main);
+    color: var(--color-primary-contrast);
+  }
+
+  .badge-outline {
+    background-color: transparent;
+    border: 1px solid currentColor;
+  }
 
   .modal-overlay {
     position: fixed;
@@ -558,11 +875,35 @@
     animation: spin 0.8s linear infinite;
   }
 
-  .loader-xs { width: 12px; height: 12px; border-width: 1.5px; }
-  .loader-sm { width: 16px; height: 16px; border-width: 2px; }
-  .loader-md { width: 24px; height: 24px; border-width: 2px; }
-  .loader-lg { width: 32px; height: 32px; border-width: 3px; }
-  .loader-xl { width: 48px; height: 48px; border-width: 3px; }
+  .loader-xs {
+    width: 12px;
+    height: 12px;
+    border-width: 1.5px;
+  }
+
+  .loader-sm {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+
+  .loader-md {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+
+  .loader-lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  .loader-xl {
+    width: 48px;
+    height: 48px;
+    border-width: 3px;
+  }
 
   .loader-white {
     border-top-color: var(--color-primary-contrast);
@@ -597,7 +938,6 @@
     border-radius: var(--border-radius-xl);
   }
 
-  /* Animation modifiers — defined after .skeleton so they win the cascade. */
   .skeleton-shimmer {
     animation: shimmer 1.5s infinite;
   }
@@ -688,9 +1028,23 @@
     overflow: hidden;
   }
 
-  .avatar-sm { width: 32px; height: 32px; font-size: var(--font-size-sm); }
-  .avatar-lg { width: 56px; height: 56px; font-size: var(--font-size-xl); }
-  .avatar-xl { width: 80px; height: 80px; font-size: var(--font-size-3xl); }
+  .avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-sm);
+  }
+
+  .avatar-lg {
+    width: 56px;
+    height: 56px;
+    font-size: var(--font-size-xl);
+  }
+
+  .avatar-xl {
+    width: 80px;
+    height: 80px;
+    font-size: var(--font-size-3xl);
+  }
 
   .avatar-img {
     width: 100%;

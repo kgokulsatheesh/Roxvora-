@@ -35,17 +35,17 @@ const BrandStory = () => {
 
   return (
     <section className="py-28 md:py-44 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Brand heritage">
-      
+
       {/* Soft Ambient Cream & Gold Glows */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#9A7B2C]/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#E6DFD5]/40 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="container mx-auto px-6 md:px-12 max-w-[1536px] relative z-10">
-        
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between border-b border-neutral-300/80 pb-12 mb-16 gap-8">
           <div>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -71,11 +71,10 @@ const BrandStory = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab)}
-                className={`text-left p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${
-                  isActive 
-                    ? 'bg-white border-[#9A7B2C] shadow-[0_20px_50px_rgba(154,123,44,0.12)] ring-1 ring-[#9A7B2C]/40 scale-[1.02]' 
+                className={`text-left p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${isActive
+                    ? 'bg-white border-[#9A7B2C] shadow-[0_20px_50px_rgba(154,123,44,0.12)] ring-1 ring-[#9A7B2C]/40 scale-[1.02]'
                     : 'bg-white/60 border-neutral-200/80 hover:bg-white hover:border-neutral-300 text-neutral-600 hover:text-neutral-950 shadow-sm'
-                }`}
+                  }`}
               >
                 <div className="flex justify-between items-center mb-3">
                   <span className={`text-[10px] font-bold uppercase tracking-[0.25em] ${isActive ? 'text-[#9A7B2C]' : 'text-neutral-400'}`}>
@@ -95,7 +94,7 @@ const BrandStory = () => {
 
         {/* Dynamic Ivory Display Showcase */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-white/90 backdrop-blur-xl border border-neutral-200/80 rounded-[3rem] p-6 sm:p-12 shadow-[0_30px_70px_rgba(0,0,0,0.06)] overflow-hidden relative">
-          
+
           {/* Left: Cinematic Animated Image Display */}
           <div className="lg:col-span-7 relative rounded-[2.5rem] overflow-hidden aspect-[16/10] lg:aspect-[16/11] bg-neutral-100 shadow-xl">
             <AnimatePresence mode="wait">
@@ -111,7 +110,7 @@ const BrandStory = () => {
               />
             </AnimatePresence>
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-            
+
             {/* Floating Highlight Pill */}
             <div className="absolute bottom-6 left-6 z-20">
               <span className="px-5 py-2 bg-white/90 backdrop-blur-md border border-white/40 rounded-full text-xs font-bold uppercase tracking-widest text-neutral-900 shadow-lg">

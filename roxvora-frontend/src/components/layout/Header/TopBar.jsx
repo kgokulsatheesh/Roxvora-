@@ -1,6 +1,7 @@
 import { FiTruck, FiRotateCcw, FiShield, FiHeadphones } from 'react-icons/fi';
 
-import { appConfig } from '@config/appConfig';
+// import { appConfig } from '@config/appConfig';
+import { appConfig } from '../../../config/appConfig';
 
 const TopBar = () => {
   const features = [
@@ -12,7 +13,7 @@ const TopBar = () => {
 
   return (
     <div className="bg-primary-900 text-white hidden md:block" role="region" aria-label="Store benefits">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-center gap-8 py-2 text-xs">
           {features.map(({ icon: Icon, label, description }) => (
             <div key={label} className="flex items-center gap-2">

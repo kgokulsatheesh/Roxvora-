@@ -9,7 +9,8 @@ import InstagramSection from "../../../components/home/InstagramSection";
 import NewsletterSection from "../../../components/home/NewsletterSection";
 import ScrollReveal from "../../../components/ui/ScrollReveal";
 import { useSelector } from 'react-redux';
-import { selectProducts } from '@store/slices/productSlice';
+// import { selectProducts } from '@store/slices/productSlice';
+import { selectProducts } from "../../../store/slices/productSlice";
 
 const HomePage = () => {
   const products = useSelector(selectProducts);

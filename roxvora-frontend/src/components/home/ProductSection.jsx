@@ -24,7 +24,7 @@ export const AdvancedProductCard = ({ product }) => {
 
   return (
     <div className="group relative flex flex-col bg-white rounded-[2rem] p-3.5 sm:p-4 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_50px_rgba(0,0,0,0.1)] transition-all duration-700 border border-neutral-100 overflow-hidden">
-      
+
       {/* Reduced Size Card Image Container */}
       <div className="relative overflow-hidden rounded-[1.5rem] aspect-[4/5] bg-neutral-100 mb-3.5">
         <AnimatePresence mode="wait">
@@ -62,9 +62,8 @@ export const AdvancedProductCard = ({ product }) => {
             e.stopPropagation();
             setIsLiked(!isLiked);
           }}
-          className={`absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${
-            isLiked ? 'bg-[#9A7B2C] text-white' : 'bg-white/80 text-neutral-800 hover:bg-white'
-          }`}
+          className={`absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 shadow-md ${isLiked ? 'bg-[#9A7B2C] text-white' : 'bg-white/80 text-neutral-800 hover:bg-white'
+            }`}
           aria-label="Wishlist"
         >
           <FiHeart className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
@@ -82,9 +81,8 @@ export const AdvancedProductCard = ({ product }) => {
                   e.stopPropagation();
                   setCurrentImgIndex(idx);
                 }}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  idx === currentImgIndex ? 'w-5 bg-white' : 'w-1 bg-white/50 hover:bg-white/80'
-                }`}
+                className={`h-1 rounded-full transition-all duration-300 ${idx === currentImgIndex ? 'w-5 bg-white' : 'w-1 bg-white/50 hover:bg-white/80'
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
@@ -130,7 +128,7 @@ export const AdvancedProductCard = ({ product }) => {
             {product.name || product.title}
           </h3>
         </div>
-        
+
         <p className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-3">
           {product.subtitle || product.category || 'Wardrobe Essential'}
         </p>
@@ -187,9 +185,9 @@ const ProductSection = ({
 
   return (
     <section className={`py-28 md:py-36 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden ${className}`} aria-labelledby={headingId}>
-      
+
       {/* Infinite Marquee Background Text ("ROXVORA") with Touch/Hover Pause */}
-      <div 
+      <div
         className="absolute top-1/2 -translate-y-1/2 left-0 w-full overflow-hidden pointer-events-auto cursor-pointer opacity-[0.035] select-none z-0"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -211,12 +209,12 @@ const ProductSection = ({
         </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 max-w-[1536px] relative z-10">
-        
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
         {/* Editorial Header Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 md:mb-20">
           <div className="lg:col-span-7">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
@@ -239,7 +237,7 @@ const ProductSection = ({
             </motion.h2>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
@@ -266,7 +264,7 @@ const ProductSection = ({
 
         {/* Luxury Filter Pills */}
         {showFilters && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -277,11 +275,10 @@ const ProductSection = ({
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 ${
-                  activeCategory === cat
+                className={`px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 ${activeCategory === cat
                     ? 'bg-[#1A1816] text-white shadow-xl ring-2 ring-[#D4AF37]/50 scale-105'
                     : 'bg-white/80 text-neutral-600 hover:bg-neutral-200 border border-neutral-300/80 shadow-sm'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -295,7 +292,7 @@ const ProductSection = ({
             <p className="text-neutral-500 font-light tracking-wide text-lg">No garments available in this curation.</p>
           </div>
         ) : (
-          <motion.div 
+          <motion.div
             layout
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
           >

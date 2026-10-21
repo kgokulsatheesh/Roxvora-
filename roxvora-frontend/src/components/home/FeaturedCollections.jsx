@@ -43,8 +43,8 @@ const DEFAULT_COLLECTIONS = [
 ];
 
 const FeaturedCollections = ({
-  title = 'Featured Collections',
-  subtitle = 'Explore our handpicked apparel and seasonal garments crafted for an exquisite wardrobe experience.',
+  title = 'The Curated Wardrobe',
+  subtitle = 'An uncompromising synthesis of architectural tailoring, organic fluid fabrics, and modern sartorial expression.',
   collections = DEFAULT_COLLECTIONS,
   className = '',
 }) => {
@@ -53,7 +53,7 @@ const FeaturedCollections = ({
 
   return (
     <section 
-      className={`py-20 md:py-10 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden ${className}`} 
+      className={`py-20 md:py-32 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden ${className}`} 
       aria-labelledby="featured-collections-heading"
     >
       <div className="container mx-auto px-6 md:px-12 max-w-[1536px]">
@@ -69,7 +69,7 @@ const FeaturedCollections = ({
               className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-neutral-200/60 border border-neutral-300 rounded-full text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] mb-6 backdrop-blur-md"
             >
               <FiLayers className="w-3.5 h-3.5" />
-              <span>Curated Selection</span>
+              <span>Editorial Lookbook 2026</span>
             </motion.div>
             
             <motion.h2

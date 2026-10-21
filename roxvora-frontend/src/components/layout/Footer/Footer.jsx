@@ -6,7 +6,7 @@ import SocialLinks from './SocialLinks';
 const Footer = () => {
   return (
     <footer className="bg-primary-900 text-white pt-16 pb-8" role="contentinfo">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-4" aria-label="ROXVORA Home">

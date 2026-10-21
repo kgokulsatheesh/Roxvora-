@@ -55,7 +55,7 @@ const DEFAULT_SLIDES = [
 const HeroSection = ({
   slides = DEFAULT_SLIDES,
   autoPlay = true,
-  autoPlayInterval = 3000,
+  autoPlayInterval = 7000,
   showArrows = true,
   showIndicators = true,
   className = '',
@@ -85,26 +85,26 @@ const HeroSection = ({
     setAutoplayKey((key) => key + 1);
   }, []);
 
-  // useEffect(() => {
-  //   isFocusPausedRef.current = isFocusPaused;
-  // }, [isFocusPaused]);
+  useEffect(() => {
+    isFocusPausedRef.current = isFocusPaused;
+  }, [isFocusPaused]);
 
-  // useEffect(() => {
-  //   if (!autoPlay) return undefined;
-  //   const id = setInterval(() => {
-  //     if (document.hidden || isFocusPausedRef.current) return;
-  //     paginate(1);
-  //   }, autoPlayInterval);
-  //   return () => clearInterval(id);
-  // }, [autoPlay, autoPlayInterval, paginate, autoplayKey]);
+  useEffect(() => {
+    if (!autoPlay) return undefined;
+    const id = setInterval(() => {
+      if (document.hidden || isFocusPausedRef.current) return;
+      paginate(1);
+    }, autoPlayInterval);
+    return () => clearInterval(id);
+  }, [autoPlay, autoPlayInterval, paginate, autoplayKey]);
 
   const active = slides[currentSlide];
 
-  // Silky smooth transition animation curve
+  // Silky smooth editorial crossfade + scale transform
   const slideVariants = {
     enter: (dir) => ({
       x: dir > 0 ? '100%' : '-100%',
-      scale: 1.05,
+      scale: 1.04,
       opacity: 0,
     }),
     center: {
@@ -134,14 +134,14 @@ const HeroSection = ({
   };
 
   const itemVariants = {
-    enter: { opacity: 0, y: 30, filter: 'blur(4px)' },
+    enter: { opacity: 0, y: 25, filter: 'blur(4px)' },
     center: {
       opacity: 1,
       y: 0,
       filter: 'blur(0px)',
       transition: { duration: 1, ease: [0.22, 1, 0.36, 1] },
     },
-    exit: { opacity: 0, y: -15, filter: 'blur(4px)', transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: -10, filter: 'blur(4px)', transition: { duration: 0.3 } },
   };
 
   const onPointerDown = (e) => {
@@ -185,9 +185,9 @@ const HeroSection = ({
   return (
     <Box
       component="section"
-      className={`relative overflow-hidden bg-[#111] ${className}`}
+      className={`relative overflow-hidden bg-[#0d0d0d] ${className}`}
       style={{ touchAction: 'pan-y' }}
-      aria-label="Luxury Featured Collections Carousel"
+      aria-label="Editorial Luxury Carousel"
       aria-roledescription="carousel"
       onFocusCapture={() => setIsFocusPaused(true)}
       onBlurCapture={() => setIsFocusPaused(false)}
@@ -197,8 +197,8 @@ const HeroSection = ({
       onPointerCancel={onPointerCancel}
       onClickCapture={onClickCapture}
     >
-      {/* Expanded height bounds to allow full panoramic banner view on desktops */}
-      <Box className="relative h-[85vh] sm:h-[88vh] min-h-[620px] max-h-[980px] w-full flex items-center">
+      {/* Immersive Panoramic Height Bounds */}
+      <Box className="relative h-[85vh] sm:h-[90vh] min-h-[640px] max-h-[1000px] w-full flex items-center">
         
         {/* Background Image Carousel Slider */}
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -221,12 +221,12 @@ const HeroSection = ({
           />
         </AnimatePresence>
 
-        {/* Seamless Soft Vignette (Balanced for full image visibility and pristine text readability) */}
-        <Box className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10 w-full lg:w-2/3" />
+        {/* Editorial Cinematic Vignette for Full Panoramic Image Visibility */}
+        <Box className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/35 to-transparent z-10 w-full" />
         <Box className="absolute inset-0 bg-black/20 z-10" />
 
-        {/* Fully Responsive Fluid Container */}
-        <Container maxWidth={false} className="relative z-20 h-full flex items-center px-6 sm:px-12 lg:px-24 max-w-[1536px] mx-auto">
+        {/* Fluid Container aligning with Pinterest / High-End Lookbooks */}
+        <Container maxWidth={false} className="relative z-20 h-full flex items-center px-6 sm:px-12 lg:px-24 max-w-[1600px] mx-auto">
           <Box className="w-full max-w-2xl text-left py-12">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -238,28 +238,28 @@ const HeroSection = ({
                 exit="exit"
                 className="flex flex-col items-start"
               >
-                {/* Luxury Gold-Tinted Eyebrow Badge */}
+                {/* Champagne Gold Eyebrow Badge */}
                 <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
                   <Typography
                     component="span"
-                    className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-black/50 border border-[#D4AF37]/50 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#E5C568] backdrop-blur-md shadow-2xl"
+                    className="inline-block px-5 py-2 bg-black/40 border border-[#D4AF37]/50 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-[#E5C568] backdrop-blur-md shadow-2xl"
                   >
                     {active.eyebrow}
                   </Typography>
                 </motion.div>
 
-                {/* Bold Fluid Responsive Heading */}
+                {/* Bold Editorial Heading */}
                 <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
                   <Typography
                     variant="h1"
                     className="font-serif font-bold text-white drop-shadow-md tracking-tight"
-                    style={{ fontSize: 'clamp(2.5rem, 5.5vw, 4.8rem)', lineHeight: '1.08' }}
+                    style={{ fontSize: 'clamp(2.5rem, 5.5vw, 5rem)', lineHeight: '1.06' }}
                   >
                     {active.title}
                   </Typography>
                 </motion.div>
 
-                {/* Refined Description */}
+                {/* Description */}
                 <motion.div variants={itemVariants} className="mb-8 sm:mb-10">
                   <Typography
                     variant="body1"
@@ -269,7 +269,7 @@ const HeroSection = ({
                   </Typography>
                 </motion.div>
 
-                {/* Responsive Action Buttons */}
+                {/* Action Buttons */}
                 <motion.div variants={itemVariants} className="w-full sm:w-auto">
                   <Box className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
                     <Button
@@ -277,7 +277,7 @@ const HeroSection = ({
                       to={active.ctaLink}
                       variant="contained"
                       size="large"
-                      className="bg-[#D4AF37] hover:bg-[#C59B27] text-black px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
+                      className="bg-[#D4AF37] hover:bg-[#C59B27] text-black px-9 py-4 rounded-full text-xs font-bold uppercase tracking-widest shadow-2xl transition-all duration-300 flex items-center justify-center gap-2 group"
                     >
                       {active.ctaText}
                       <FiArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -288,7 +288,7 @@ const HeroSection = ({
                       to="/shop"
                       variant="outlined"
                       size="large"
-                      className="border-white/50 text-white hover:bg-white hover:text-black px-8 py-3.5 sm:py-4 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 flex items-center justify-center"
+                      className="border-white/50 text-white hover:bg-white hover:text-black px-9 py-4 rounded-full text-xs font-bold uppercase tracking-widest backdrop-blur-sm transition-all duration-300 flex items-center justify-center"
                     >
                       View Collections
                     </Button>
@@ -299,7 +299,7 @@ const HeroSection = ({
           </Box>
         </Container>
 
-        {/* Navigation Arrows */}
+        {/* Minimalist Navigation Arrows */}
         {showArrows && (
           <>
             <IconButton
@@ -325,7 +325,7 @@ const HeroSection = ({
           </>
         )}
 
-        {/* Indicators */}
+        {/* Segmented Gold Indicators */}
         {showIndicators && (
           <Box
             className="absolute bottom-6 sm:bottom-8 left-6 sm:left-12 lg:left-24 z-30 flex items-center gap-2.5 sm:gap-3"

@@ -17,7 +17,7 @@ const InstagramSection = ({
 }) => {
   return (
     <section className={`py-16 md:py-24 bg-neutral-50 ${className}`} aria-labelledby="instagram-heading">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-secondary-700 mb-3">
             <FiInstagram className="w-4 h-4" aria-hidden="true" />

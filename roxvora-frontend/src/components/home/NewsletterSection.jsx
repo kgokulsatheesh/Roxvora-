@@ -53,7 +53,7 @@ const NewsletterSection = ({
 
   return (
     <section className={`py-16 md:py-24 ${className}`} aria-labelledby="newsletter-heading">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-primary-900 px-6 py-14 md:px-16 md:py-20 text-center">
           <span
             className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full bg-secondary/15 blur-3xl"

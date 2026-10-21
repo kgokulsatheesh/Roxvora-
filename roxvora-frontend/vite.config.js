@@ -1,29 +1,33 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import { fileURLToPath, URL } from 'node:url'
+
+const src = (path) => fileURLToPath(new URL(path, import.meta.url))
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@api': path.resolve(__dirname, './src/api'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@config': path.resolve(__dirname, './src/config'),
-      '@constants': path.resolve(__dirname, './src/constants'),
-      '@context': path.resolve(__dirname, './src/context'),
-      '@data': path.resolve(__dirname, './src/data'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@routes': path.resolve(__dirname, './src/routes'),
-      '@store': path.resolve(__dirname, './src/store'),
-      '@styles': path.resolve(__dirname, './src/styles'),
-      '@theme': path.resolve(__dirname, './src/theme'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@validations': path.resolve(__dirname, './src/validations'),
+      '@': src('./src'),
+      '@api': src('./src/api'),
+      '@components': src('./src/components'),
+      '@config': src('./src/config'),
+      '@constants': src('./src/constants'),
+      '@context': src('./src/context'),
+      '@data': src('./src/data'),
+      '@hooks': src('./src/hooks'),
+      '@pages': src('./src/pages'),
+      '@routes': src('./src/routes'),
+      '@store': src('./src/store'),
+      '@styles': src('./src/styles'),
+      '@theme': src('./src/theme'),
+      '@utils': src('./src/utils'),
+      '@validations': src('./src/validations'),
     },
   },
+
   server: {
     open: true,
   },
