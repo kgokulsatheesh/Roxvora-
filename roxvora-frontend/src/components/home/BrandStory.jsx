@@ -1,38 +1,62 @@
-import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowUpRight, FiCompass, FiShield, FiAward, FiLayers } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
+import { FiArrowRight } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
-const STORY_TABS = [
-  {
-    id: 'atelier',
-    title: 'The Atelier Craft',
-    subtitle: 'Bespoke Precision',
-    description: 'Every garment undergoes a rigorous 48-step architectural construction process, blending structured Italian wools with hand-finished structural seams.',
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&q=80',
-    highlight: '48-Step Tailoring',
-  },
-  {
-    id: 'sustainability',
-    title: 'Conscious Luxury',
-    subtitle: 'Organic & Ethical',
-    description: 'We partner exclusively with certified ethical mills using 100% biodegradable botanical fibers, ensuring zero compromise on luxury or planetary health.',
-    image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=1200&q=80',
-    highlight: '100% Sustainable',
-  },
-  {
-    id: 'heritage',
-    title: 'Timeless Expression',
-    subtitle: 'Numbered Editions',
-    description: 'Rejecting mass fast-fashion, ROXVORA issues exclusive, numbered micro-collections designed to be treasured as wearable works of art across generations.',
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80',
-    highlight: 'Exclusive Drops',
-  },
-];
+const BrandStory = ({ className = '' }) => {
+    return (
+        <section
+            className={`py-16 md:py-24 bg-neutral-50 ${className}`}
+            aria-labelledby="brand-story-heading"
+        >
+            <div className="container mx-auto px-4 md:px-8">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                    {/* Image side */}
+                    <motion.div
+                        initial={{ x: -30, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        viewport={{ once: true, margin: '-80px' }}
+                        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative"
+                    >
+                        <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-200">
+                            <img
+                                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"
+                                alt="ROXVORA atelier — a craftsperson at a sewing table"
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                        {/* Floating accent card */}
+                        <div className="absolute -bottom-6 -right-4 md:-right-8 bg-white rounded-xl shadow-lg px-6 py-5 max-w-[220px]">
+                            <p className="text-4xl font-secondary font-bold text-primary leading-none">12+</p>
+                            <p className="text-sm text-secondary mt-1">Years crafting premium fashion</p>
+                        </div>
+                    </motion.div>
 
-const BrandStory = () => {
-  const [activeTab, setActiveTab] = useState(STORY_TABS[0]);
+                    {/* Text side */}
+                    <motion.div
+                        initial={{ x: 30, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        viewport={{ once: true, margin: '-80px' }}
+                        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <span className="inline-block text-xs font-semibold uppercase tracking-widest text-secondary-700 mb-4">
+                            Our Story
+                        </span>
+                        <h2
+                            id="brand-story-heading"
+                            className="text-3xl md:text-4xl lg:text-5xl font-secondary font-semibold text-primary leading-tight mb-6"
+                        >
+                            Fashion with purpose, crafted with care
+                        </h2>
+                        <p className="text-secondary text-lg leading-relaxed mb-5">
+                            ROXVORA was built on a simple belief — that premium fashion should be accessible, sustainable, and made to last. Every piece in our collection is thoughtfully sourced from designers who share our commitment to quality.
+                        </p>
+                        <p className="text-secondary leading-relaxed mb-8">
+                            From ethical manufacturing partners to eco-conscious packaging, we make deliberate choices at every step so you can feel good about what you wear.
+                        </p>
 
+<<<<<<< HEAD
   return (
     <section className="py-28 md:py-44 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Brand heritage">
 
@@ -116,47 +140,36 @@ const BrandStory = () => {
               <span className="px-5 py-2 bg-white/90 backdrop-blur-md border border-white/40 rounded-full text-xs font-bold uppercase tracking-widest text-neutral-900 shadow-lg">
                 ✦ {activeTab.highlight}
               </span>
-            </div>
-          </div>
+=======
+                        <div className="flex flex-wrap gap-8 mb-10">
+                            {[
+                                { stat: '500+', label: 'Curated styles' },
+                                { stat: '50K+', label: 'Happy customers' },
+                                { stat: '100%', label: 'Ethical sourcing' },
+                            ].map(({ stat, label }) => (
+                                <div key={label}>
+                                    <p className="text-3xl font-secondary font-bold text-primary">{stat}</p>
+                                    <p className="text-sm text-secondary mt-1">{label}</p>
+                                </div>
+                            ))}
+                        </div>
 
-          {/* Right: Dynamic Narrative Content */}
-          <div className="lg:col-span-5 flex flex-col justify-center py-4 lg:py-0">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] block mb-3">
-                  {activeTab.subtitle}
-                </span>
-                <h3 className="text-3xl sm:text-5xl font-serif font-bold text-neutral-950 mb-6 leading-tight">
-                  {activeTab.title}
-                </h3>
-                <p className="text-neutral-600 text-base sm:text-lg font-light leading-relaxed mb-8">
-                  {activeTab.description}
-                </p>
-
-                <div className="flex items-center gap-6">
-                  <Link
-                    to="/about"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-neutral-950 text-white hover:bg-[#9A7B2C] hover:text-black text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl group"
-                  >
-                    <span>Read Full Chronicle</span>
-                    <FiArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </Link>
+                        <Link
+                            to="/about"
+                            className="btn btn-primary btn-lg group inline-flex items-center gap-2"
+                        >
+                            Learn Our Story
+                            <FiArrowRight
+                                className="w-5 h-5 transition-transform group-hover:translate-x-1"
+                                aria-hidden="true"
+                            />
+                        </Link>
+                    </motion.div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-  );
+>>>>>>> parent of 9059003 (20-10-2026 tuesday-frontend)
+            </div>
+        </section>
+    );
 };
 
 export default BrandStory;

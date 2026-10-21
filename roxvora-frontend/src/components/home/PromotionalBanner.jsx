@@ -1,63 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowUpRight, FiShield, FiTruck, FiRefreshCw, FiClock, FiPercent, FiGift } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
+import { FiArrowUpRight } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
-const PROMO_CARDS = [
+const DEFAULT_BANNERS = [
   {
     id: 1,
-    title: 'Complimentary Express Logistics',
-    subtitle: 'VIP Privilege',
-    description: 'Insured worldwide delivery on all curated architectural pieces exceeding ₹999.',
+    title: 'Complimentary Global Shipping',
+    subtitle: 'Exclusive Privilege',
+    description: 'On all bespoke and curated orders exceeding ₹999.',
     image: 'https://images.unsplash.com/photo-1586204369964-d1f965a9e6c8?w=1200&q=80',
-    ctaText: 'Explore Archive',
+    ctaText: 'Explore Lookbook',
     ctaLink: '/shop',
-    badge: 'Free Shipping',
-    span: 'col-span-1 lg:col-span-8',
-    height: 'h-[420px] sm:h-[480px]',
+    featured: true, // Makes this card larger and cinematic
   },
   {
     id: 2,
-    title: 'Privé 2X Rewards',
-    subtitle: 'Loyalty Tier',
-    description: 'Double points & private styling sessions on your next acquisition.',
+    title: 'Privé Membership Tier',
+    subtitle: 'Earn 2X Rewards',
+    description: 'Unlock private styling sessions and double loyalty points on every acquisition.',
     image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80',
-    ctaText: 'Join Tier',
+    ctaText: 'Join Free',
     ctaLink: '/register',
-    badge: 'Member Only',
-    span: 'col-span-1 lg:col-span-4',
-    height: 'h-[420px] sm:h-[480px]',
+    featured: false,
   },
   {
     id: 3,
-    title: 'Archive Season Sale',
-    subtitle: 'Up to 50% Off',
-    description: 'Limited-edition seasonal drapes and signature tailoring.',
+    title: 'Architectural Season Sale',
+    subtitle: 'Limited Archive',
+    description: 'Up to 50% off selected master tailoring and seasonal drapes.',
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80',
-    ctaText: 'Shop Sale',
+    ctaText: 'View Archive',
     ctaLink: '/shop/sale',
-    badge: 'Seasonal Drop',
-    span: 'col-span-1 lg:col-span-4',
-    height: 'h-[380px]',
-  },
-  {
-    id: 4,
-    title: 'Bespoke Consultations',
-    subtitle: 'Personalized Fit',
-    description: 'Book a one-on-one virtual session with our master tailors.',
-    image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80',
-    ctaText: 'Book Session',
-    ctaLink: '/consultation',
-    badge: 'Concierge',
-    span: 'col-span-1 lg:col-span-8',
-    height: 'h-[380px]',
+    featured: false,
   },
 ];
 
-const PromotionalBanner = () => {
-  const [hoveredCard, setHoveredCard] = useState(null);
-
+const PromotionalBanner = ({ banners = DEFAULT_BANNERS, className = '' }) => {
   return (
+<<<<<<< HEAD
     <section className="py-28 md:py-40 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Promotional offers">
 
       {/* Ambient background decoration */}
@@ -79,13 +60,27 @@ const PromotionalBanner = () => {
             </motion.div>
             <h2 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-neutral-950">
               Privileged Perks & Offers
+=======
+    <section className={`py-24 md:py-36 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden ${className}`} aria-label="Promotional offers">
+      <div className="container mx-auto px-6 md:px-12 max-w-[1536px]">
+        
+        {/* Editorial Section Intro */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300/60 pb-10 mb-14 gap-6">
+          <div>
+            <span className="inline-block text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] mb-3">
+              Privileged Access
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-neutral-950">
+              Curated Advantages
+>>>>>>> parent of 9059003 (20-10-2026 tuesday-frontend)
             </h2>
           </div>
-          <p className="text-neutral-600 text-base sm:text-lg font-light max-w-md">
-            Uncompromising benefits engineered to elevate your wardrobe curation from acquisition to delivery.
+          <p className="text-neutral-600 text-sm sm:text-base font-light max-w-sm">
+            Designed for those who appreciate uncompromising craftsmanship and elevated wardrobe experiences.
           </p>
         </div>
 
+<<<<<<< HEAD
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 mb-20">
           {PROMO_CARDS.map((card, index) => (
@@ -108,70 +103,70 @@ const PromotionalBanner = () => {
                   </span>
                   <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-transform duration-500 group-hover:scale-110 group-hover:bg-[#D4AF37] group-hover:text-black group-hover:border-transparent">
                     <FiArrowUpRight className="w-4 h-4 transition-transform group-hover:rotate-45" />
+=======
+        {/* Asymmetrical High-End Editorial Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {banners.map((banner, index) => {
+            const isFeatured = banner.featured;
+
+            return (
+              <motion.article
+                key={banner.id}
+                initial={{ y: 35, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className={`relative overflow-hidden rounded-[2.5rem] group shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] transition-all duration-700 ${
+                  isFeatured ? 'lg:col-span-7 h-[450px] md:h-[520px]' : 'lg:col-span-5 h-[240px] md:h-[246px]'
+                }`}
+              >
+                <Link
+                  to={banner.ctaLink}
+                  className="absolute inset-0 h-full w-full flex flex-col justify-end p-8 sm:p-10 z-20 cursor-pointer"
+                  aria-label={`${banner.title} — ${banner.ctaText}`}
+                >
+                  {/* Background Image with Cinematic Zoom & Vignette */}
+                  {banner.image && (
+                    <img
+                      src={banner.image}
+                      alt={banner.title}
+                      className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-1000 ease-out"
+                      loading="lazy"
+                    />
+                  )}
+
+                  {/* Deep Luxury Gradient Overlay for High Readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1816]/95 via-[#1A1816]/40 to-transparent transition-opacity duration-500" />
+
+                  {/* Content Container */}
+                  <div className="relative z-10 flex flex-col items-start justify-end h-full">
+                    <span className="px-3.5 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-widest text-[#F3E5AB] mb-4 border border-white/20">
+                      {banner.subtitle}
+                    </span>
+
+                    <h3 className={`font-serif font-bold text-white tracking-tight mb-2 ${isFeatured ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'}`}>
+                      {banner.title}
+                    </h3>
+
+                    <p className={`text-neutral-300 font-light leading-relaxed mb-6 line-clamp-2 ${isFeatured ? 'text-sm sm:text-base max-w-lg' : 'text-xs sm:text-sm'}`}>
+                      {banner.description}
+                    </p>
+
+                    <span className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-white text-neutral-950 group-hover:bg-[#D4AF37] group-hover:text-black text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl">
+                      <span>{banner.ctaText}</span>
+                      <span className="w-5 h-5 rounded-full bg-neutral-950 text-white group-hover:bg-black flex items-center justify-center transition-transform group-hover:rotate-45">
+                        <FiArrowUpRight className="w-3 h-3" />
+                      </span>
+                    </span>
+>>>>>>> parent of 9059003 (20-10-2026 tuesday-frontend)
                   </div>
-                </div>
+                </Link>
+              </motion.article>
+            );
+          })}
 
-                {/* Bottom Text Details */}
-                <div>
-                  <span className="block text-xs font-semibold uppercase tracking-[0.25em] text-[#F3E5AB] mb-2">
-                    {card.subtitle}
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white mb-2 tracking-tight">
-                    {card.title}
-                  </h3>
-                  <p className="text-neutral-300 text-sm font-light leading-relaxed max-w-md line-clamp-2">
-                    {card.description}
-                  </p>
-                </div>
-              </Link>
-
-              {/* Background Image with Zoom Effect */}
-              <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-1000 ease-out opacity-60"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              </div>
-            </motion.article>
-          ))}
         </div>
-
-        {/* High-Tech Trust Badges Strip */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 border-t border-neutral-300/60">
-          <div className="flex items-center gap-5 p-6 bg-white/80 backdrop-blur-md rounded-3xl border border-neutral-200 shadow-sm hover:border-[#D4AF37] transition-colors">
-            <div className="w-14 h-14 rounded-2xl bg-neutral-950 text-[#D4AF37] flex items-center justify-center flex-shrink-0 shadow-lg">
-              <FiTruck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-serif font-bold text-neutral-950 text-base mb-1">Global Express Logistics</h4>
-              <p className="text-xs text-neutral-500 font-light">Fully insured doorstep delivery worldwide.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-5 p-6 bg-white/80 backdrop-blur-md rounded-3xl border border-neutral-200 shadow-sm hover:border-[#D4AF37] transition-colors">
-            <div className="w-14 h-14 rounded-2xl bg-neutral-950 text-[#D4AF37] flex items-center justify-center flex-shrink-0 shadow-lg">
-              <FiShield className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-serif font-bold text-neutral-950 text-base mb-1">Authenticated Luxury</h4>
-              <p className="text-xs text-neutral-500 font-light">Certified ethical and sustainable fibers.</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-5 p-6 bg-white/80 backdrop-blur-md rounded-3xl border border-neutral-200 shadow-sm hover:border-[#D4AF37] transition-colors">
-            <div className="w-14 h-14 rounded-2xl bg-neutral-950 text-[#D4AF37] flex items-center justify-center flex-shrink-0 shadow-lg">
-              <FiRefreshCw className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="font-serif font-bold text-neutral-950 text-base mb-1">Concierge Returns</h4>
-              <p className="text-xs text-neutral-500 font-light">Seamless complimentary home pickups.</p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
   );
