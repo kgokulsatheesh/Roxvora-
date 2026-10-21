@@ -4,7 +4,7 @@ import AdminLayout from "../components/layout/AdminLayout";
 import HomePage from "../pages/customer/Home/HomePage";
 import ShopPage from "../pages/customer/Shop/ShopPage";
 import CategoryPage from "../pages/customer/Shop/CategoryPage";
-import ProductDetailsPage from "../pages/customer/Product/ProductDetailsPage";
+import ProductDetailPage from "../pages/ProductDetailPage";
 import CartPage from "../pages/customer/Cart/CartPage";
 import WishlistPage from "../pages/customer/Wishlist/WishlistPage";
 import CheckoutPage from "../pages/customer/Checkout/CheckoutPage";
@@ -30,6 +30,9 @@ import AccountPaymentPage from "../pages/customer/Account/AccountPaymentPage";
 import AccountSettingsPage from "../pages/customer/Account/AccountSettingsPage";
 import { INFO_SLUGS } from '../pages/customer/Info/infoContent';
 import { AdminRoute } from '../components/common/ProtectedRoute/ProtectedRoute';
+
+import ProductionPage from '../components/home/ProductionPage';
+
 
 // EditProductPage receives `params` rather than calling useParams itself.
 const EditProductRoute = () => {
@@ -69,6 +72,11 @@ const AppRoutes = () => {
             <Route path="payment" element={<AccountPaymentPage />} />
             <Route path="settings" element={<AccountSettingsPage />} />
           </Route>
+
+          {/* full productPage */}
+          <Route path="/" element={<ProductionPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} /> {/* <-- Dynamic Route */}
           {INFO_SLUGS.map((slug) => (
             <Route key={slug} path={`/${slug}`} element={<InfoPage />} />
           ))}
