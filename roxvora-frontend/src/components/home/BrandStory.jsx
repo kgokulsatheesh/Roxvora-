@@ -1,175 +1,133 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowRight } from 'react-icons/fi';
-import { motion } from 'framer-motion';
+import { FiArrowUpRight, FiLayers } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const BrandStory = ({ className = '' }) => {
-    return (
-        <section
-            className={`py-16 md:py-24 bg-neutral-50 ${className}`}
-            aria-labelledby="brand-story-heading"
-        >
-            <div className="container mx-auto px-4 md:px-8">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    {/* Image side */}
-                    <motion.div
-                        initial={{ x: -30, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        viewport={{ once: true, margin: '-80px' }}
-                        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative"
-                    >
-                        <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-200">
-                            <img
-                                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"
-                                alt="ROXVORA atelier — a craftsperson at a sewing table"
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                            />
-                        </div>
-                        {/* Floating accent card */}
-                        <div className="absolute -bottom-6 -right-4 md:-right-8 bg-white rounded-xl shadow-lg px-6 py-5 max-w-[220px]">
-                            <p className="text-4xl font-secondary font-bold text-primary leading-none">12+</p>
-                            <p className="text-sm text-secondary mt-1">Years crafting premium fashion</p>
-                        </div>
-                    </motion.div>
+const ARTISAN_PILLARS = [
+  {
+    num: '01',
+    label: 'Architecture',
+    heading: 'The Geometry of Drape',
+    copy: 'Every piece is conceived with structural precision—anchoring bold, clean lines to the human form while allowing unrestricted fluid movement.',
+    visual: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1200&q=80',
+    accent: 'Tailored Mastery',
+  },
+  {
+    num: '02',
+    label: 'Botanical Source',
+    heading: 'Tactile Weightlessness',
+    copy: 'Sourced directly from heritage organic mills, our textiles provide an ethereal second-skin lightness that breathes naturally with the environment.',
+    visual: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=1200&q=80',
+    accent: 'Pure Organic',
+  },
+  {
+    num: '03',
+    label: 'Limited Archive',
+    heading: 'Individual Identity',
+    copy: 'We reject industrial scale. Each collection is strictly restricted in volume, designed to serve as a rare collector statement rather than fleeting wear.',
+    visual: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80',
+    accent: 'Numbered Series',
+  },
+];
 
-                    {/* Text side */}
-                    <motion.div
-                        initial={{ x: 30, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        viewport={{ once: true, margin: '-80px' }}
-                        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                        <span className="inline-block text-xs font-semibold uppercase tracking-widest text-secondary-700 mb-4">
-                            Our Story
-                        </span>
-                        <h2
-                            id="brand-story-heading"
-                            className="text-3xl md:text-4xl lg:text-5xl font-secondary font-semibold text-primary leading-tight mb-6"
-                        >
-                            Fashion with purpose, crafted with care
-                        </h2>
-                        <p className="text-secondary text-lg leading-relaxed mb-5">
-                            ROXVORA was built on a simple belief — that premium fashion should be accessible, sustainable, and made to last. Every piece in our collection is thoughtfully sourced from designers who share our commitment to quality.
-                        </p>
-                        <p className="text-secondary leading-relaxed mb-8">
-                            From ethical manufacturing partners to eco-conscious packaging, we make deliberate choices at every step so you can feel good about what you wear.
-                        </p>
+const BrandStory = () => {
+  const [selectedPillar, setSelectedPillar] = useState(0);
+  const activeData = ARTISAN_PILLARS[selectedPillar];
 
-<<<<<<< HEAD
   return (
-    <section className="py-28 md:py-44 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Brand heritage">
-
-      {/* Soft Ambient Cream & Gold Glows */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#9A7B2C]/5 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#E6DFD5]/40 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-        {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between border-b border-neutral-300/80 pb-12 mb-16 gap-8">
+    <section className="py-24 md:py-36 bg-[#FAF7F2] text-neutral-950 relative overflow-hidden" aria-label="Brand narrative">
+      <div className="container mx-auto px-6 md:px-12 max-w-[1536px]">
+        
+        {/* Top Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300/80 pb-10 mb-14 gap-6">
           <div>
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 bg-white border border-neutral-300 rounded-full text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] mb-6 shadow-sm backdrop-blur-md"
-            >
-              <FiCompass className="w-3.5 h-3.5" />
-              <span>Immersive Heritage 2026</span>
-            </motion.div>
-            <h2 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-neutral-950 leading-[1.05]">
-              The Anatomy of <span className="text-[#9A7B2C]">ROXVORA</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-neutral-300 rounded-full text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9A7B2C] mb-4 shadow-sm">
+              <FiLayers className="w-3.5 h-3.5" />
+              <span>Sartorial Manifest</span>
+            </div>
+            <h2 className="text-4xl sm:text-6xl font-serif font-bold tracking-tight text-neutral-950">
+              The Art of <span className="text-[#9A7B2C]">Fabrication</span>
             </h2>
           </div>
-          <p className="text-neutral-600 text-base sm:text-lg font-light max-w-md leading-relaxed">
-            Explore the pillars of uncompromising craftsmanship, sustainable innovation, and timeless sartorial architecture.
+          <p className="text-neutral-600 text-base font-light max-w-sm">
+            Select a pillar below to explore the core design philosophy shaping our collections.
           </p>
         </div>
 
-        {/* Interactive Luxury Cream Tab Selectors */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          {STORY_TABS.map((tab) => {
-            const isActive = activeTab.id === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab)}
-                className={`text-left p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer relative overflow-hidden group ${isActive
-                    ? 'bg-white border-[#9A7B2C] shadow-[0_20px_50px_rgba(154,123,44,0.12)] ring-1 ring-[#9A7B2C]/40 scale-[1.02]'
-                    : 'bg-white/60 border-neutral-200/80 hover:bg-white hover:border-neutral-300 text-neutral-600 hover:text-neutral-950 shadow-sm'
+        {/* Brand New Layout: Minimalist Horizontal Switcher with Dynamic Canvas Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          {/* Left Side: Interactive Selector Deck */}
+          <div className="lg:col-span-5 flex flex-col gap-4">
+            {ARTISAN_PILLARS.map((item, index) => {
+              const isSelected = selectedPillar === index;
+              return (
+                <div
+                  key={item.num}
+                  onClick={() => setSelectedPillar(index)}
+                  className={`p-6 sm:p-8 rounded-[2.5rem] border transition-all duration-500 cursor-pointer flex items-center justify-between group ${
+                    isSelected
+                      ? 'bg-[#1A1816] text-white border-[#1A1816] shadow-xl scale-[1.02]'
+                      : 'bg-white/90 text-neutral-900 border-neutral-200 hover:border-neutral-400 shadow-sm'
                   }`}
-              >
-                <div className="flex justify-between items-center mb-3">
-                  <span className={`text-[10px] font-bold uppercase tracking-[0.25em] ${isActive ? 'text-[#9A7B2C]' : 'text-neutral-400'}`}>
-                    {tab.subtitle}
-                  </span>
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs transition-transform group-hover:rotate-45 ${isActive ? 'bg-[#9A7B2C] text-white font-bold' : 'bg-neutral-100 text-neutral-800'}`}>
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3">
+                      <span className={`text-xs font-mono font-bold tracking-widest ${isSelected ? 'text-[#D4AF37]' : 'text-neutral-400'}`}>
+                        {item.num}
+                      </span>
+                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full ${isSelected ? 'bg-white/10 text-white' : 'bg-neutral-100 text-neutral-600'}`}>
+                        {item.accent}
+                      </span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-serif font-bold pt-1">
+                      {item.heading}
+                    </h3>
+                  </div>
+
+                  <span className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform group-hover:rotate-45 ${isSelected ? 'bg-[#D4AF37] text-black' : 'bg-neutral-100 text-neutral-800'}`}>
                     <FiArrowUpRight className="w-4 h-4" />
                   </span>
                 </div>
-                <h3 className={`text-xl sm:text-2xl font-serif font-bold ${isActive ? 'text-neutral-950' : 'text-neutral-800'}`}>
-                  {tab.title}
-                </h3>
-              </button>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/* Dynamic Ivory Display Showcase */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-white/90 backdrop-blur-xl border border-neutral-200/80 rounded-[3rem] p-6 sm:p-12 shadow-[0_30px_70px_rgba(0,0,0,0.06)] overflow-hidden relative">
-
-          {/* Left: Cinematic Animated Image Display */}
-          <div className="lg:col-span-7 relative rounded-[2.5rem] overflow-hidden aspect-[16/10] lg:aspect-[16/11] bg-neutral-100 shadow-xl">
+          {/* Right Side: Immersive Canvas Display */}
+          <div className="lg:col-span-7 relative rounded-[3rem] overflow-hidden bg-neutral-900 h-[480px] sm:h-[540px] shadow-2xl flex flex-col justify-end p-8 sm:p-12">
             <AnimatePresence mode="wait">
               <motion.img
-                key={activeTab.id}
-                src={activeTab.image}
-                alt={activeTab.title}
+                key={activeData.num}
+                src={activeData.visual}
+                alt={activeData.heading}
                 initial={{ opacity: 0, scale: 1.05 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-0 w-full h-full object-cover object-center"
               />
             </AnimatePresence>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-            {/* Floating Highlight Pill */}
-            <div className="absolute bottom-6 left-6 z-20">
-              <span className="px-5 py-2 bg-white/90 backdrop-blur-md border border-white/40 rounded-full text-xs font-bold uppercase tracking-widest text-neutral-900 shadow-lg">
-                ✦ {activeTab.highlight}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+            <div className="relative z-10 text-white space-y-3">
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#F3E5AB]">
+                Pillar {activeData.num} — {activeData.label}
               </span>
-=======
-                        <div className="flex flex-wrap gap-8 mb-10">
-                            {[
-                                { stat: '500+', label: 'Curated styles' },
-                                { stat: '50K+', label: 'Happy customers' },
-                                { stat: '100%', label: 'Ethical sourcing' },
-                            ].map(({ stat, label }) => (
-                                <div key={label}>
-                                    <p className="text-3xl font-secondary font-bold text-primary">{stat}</p>
-                                    <p className="text-sm text-secondary mt-1">{label}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <Link
-                            to="/about"
-                            className="btn btn-primary btn-lg group inline-flex items-center gap-2"
-                        >
-                            Learn Our Story
-                            <FiArrowRight
-                                className="w-5 h-5 transition-transform group-hover:translate-x-1"
-                                aria-hidden="true"
-                            />
-                        </Link>
-                    </motion.div>
-                </div>
->>>>>>> parent of 9059003 (20-10-2026 tuesday-frontend)
+              <h4 className="text-3xl sm:text-4xl font-serif font-bold">
+                {activeData.heading}
+              </h4>
+              <p className="text-neutral-300 text-sm sm:text-base font-light max-w-xl leading-relaxed">
+                {activeData.copy}
+              </p>
             </div>
-        </section>
-    );
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
 };
 
 export default BrandStory;
