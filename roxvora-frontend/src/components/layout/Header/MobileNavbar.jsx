@@ -19,13 +19,13 @@ import {
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../../context/CartContext";
 
 import SearchDrawer from "./SearchDrawer";
 import CategoryMenu from "./CategoryMenu";
 
 const MobileNavbar = () => {
   const navigate = useNavigate();
-
   const theme = useTheme();
 
   const isMobile = useMediaQuery(
@@ -33,8 +33,16 @@ const MobileNavbar = () => {
   );
 
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [searchOpen, setSearchOpen] = useState(false);
+
+  // SAFE CART HOOK: Prevents "useCart must be used within a CartProvider" crashes
+  let totalItems = 0;
+  try {
+    const cart = useCart();
+    totalItems = cart?.totalItems || 0;
+  } catch (err) {
+    totalItems = 0;
+  }
 
   if (!isMobile) {
     return null;
@@ -59,14 +67,11 @@ const MobileNavbar = () => {
                 xs: 64,
                 sm: 70,
               },
-
               display: "flex",
               justifyContent: "space-between",
             }}
           >
-
             {/* LEFT */}
-
             <Box
               sx={{
                 display: "flex",
@@ -84,21 +89,16 @@ const MobileNavbar = () => {
               </IconButton>
 
               {/* LOGO */}
-
               <Typography
                 onClick={() => navigate("/")}
                 sx={{
                   cursor: "pointer",
-
                   fontSize: {
                     xs: "20px",
                     sm: "23px",
                   },
-
                   fontWeight: 800,
-
                   letterSpacing: "1.5px",
-
                   color: "#173b36",
                 }}
               >
@@ -107,16 +107,13 @@ const MobileNavbar = () => {
             </Box>
 
             {/* RIGHT */}
-
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
               }}
             >
-
               {/* SEARCH */}
-
               <IconButton
                 onClick={() => setSearchOpen(true)}
                 sx={{
@@ -127,7 +124,6 @@ const MobileNavbar = () => {
               </IconButton>
 
               {/* CART */}
-
               <IconButton
                 onClick={() => navigate("/cart")}
                 sx={{
@@ -135,7 +131,7 @@ const MobileNavbar = () => {
                 }}
               >
                 <Badge
-                  badgeContent={2}
+                  badgeContent={totalItems}
                   sx={{
                     "& .MuiBadge-badge": {
                       backgroundColor: "#b08d57",
@@ -147,22 +143,18 @@ const MobileNavbar = () => {
                   <ShoppingBagOutlined />
                 </Badge>
               </IconButton>
-
             </Box>
-
           </Toolbar>
         </Container>
       </AppBar>
 
       {/* MOBILE CATEGORY MENU */}
-
       <CategoryMenu
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
       />
 
       {/* SEARCH DRAWER */}
-
       <SearchDrawer
         open={searchOpen}
         onClose={() => setSearchOpen(false)}

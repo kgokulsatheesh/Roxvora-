@@ -3,8 +3,10 @@ import MainLayout from "../components/layout/MainLayout";
 import AdminLayout from "../components/layout/AdminLayout";
 import HomePage from "../pages/customer/Home/HomePage";
 import ShopPage from "../pages/customer/Shop/ShopPage";
-import CategoryPage from "../pages/customer/Shop/CategoryPage";
-import ProductDetailPage from "../pages/ProductDetailPage";
+import Navbar from '../components/layout/Navbar/Navbar';
+import CategoryPage from "../../src/pages/customer/Category/CategoryPage"
+// import ProductDetailPage from "../../src/pages/ProductDetailPage";
+import ProductDetailsPage from '../pages/customer/ProductDetails/ProductDetailsPage';
 import CartPage from "../pages/customer/Cart/CartPage";
 import WishlistPage from "../pages/customer/Wishlist/WishlistPage";
 import CheckoutPage from "../pages/customer/Checkout/CheckoutPage";
@@ -53,6 +55,7 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/navbar" element ={<Navbar />}/>
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/shop/:category/:subcategory" element={<CategoryPage />} />
           <Route path="/shop/:category" element={<CategoryPage />} />
@@ -71,12 +74,13 @@ const AppRoutes = () => {
             <Route path="addresses" element={<AccountAddressesPage />} />
             <Route path="payment" element={<AccountPaymentPage />} />
             <Route path="settings" element={<AccountSettingsPage />} />
+            {/* <Route path="productDetails" element={<ProductDetailsPage />}/> */}
           </Route>
 
           {/* full productPage */}
           <Route path="/" element={<ProductionPage />} />
           <Route path="/shop" element={<ShopPage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} /> {/* <-- Dynamic Route */}
+          <Route path="/product/:id" element={<ProductDetailsPage />} /> {/* <-- Dynamic Route */}
           {INFO_SLUGS.map((slug) => (
             <Route key={slug} path={`/${slug}`} element={<InfoPage />} />
           ))}

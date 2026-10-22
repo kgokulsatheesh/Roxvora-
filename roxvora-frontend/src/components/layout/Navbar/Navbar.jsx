@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../../context/CartContext";
 
 import {
@@ -33,43 +34,56 @@ import {
 } from "@mui/material";
 
 /* =========================================================
-   ROXVORA NAVBAR
-   React.jsx + MUI
-
-   Responsive:
-   Mobile
-   Tablet
-   Laptop
-   Desktop
+    ROXVORA LUXURY NAVBAR
+    Universal Search Bar across Mobile, Tablet, Laptop & Desktop
 ========================================================= */
+
+const searchPlaceholders = [
+  "Search 'Best Women Collections'...",
+  "Search 'Silk Evening Dresses'...",
+  "Search 'Italian Wool Suits'...",
+  "Search 'Summer Linen Midi'...",
+];
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { totalItems } = useCart();
+  
+  const cart = useCart ? useCart() : { totalItems: 0 };
+  const totalItems = cart?.totalItems || 0;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  // Rotate placeholders every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setDrawerOpen(false);
+    }
+  };
 
   /* =========================================================
      RESPONSIVE BREAKPOINTS
   ========================================================= */
-
   const mobile = useMediaQuery("(max-width:599px)");
-
-  const tablet = useMediaQuery(
-    "(min-width:600px) and (max-width:959px)"
-  );
-
-  const laptop = useMediaQuery(
-    "(min-width:960px) and (max-width:1199px)"
-  );
-
+  const tablet = useMediaQuery("(min-width:600px) and (max-width:959px)");
+  const laptop = useMediaQuery("(min-width:960px) and (max-width:1199px)");
   const desktop = useMediaQuery("(min-width:1200px)");
+  const isSmallScreen = useMediaQuery("(max-width:959px)");
 
   /* =========================================================
      COLORS
   ========================================================= */
-
   const colors = {
     black: "#111111",
     white: "#FFFFFF",
@@ -77,67 +91,26 @@ const Navbar = () => {
     border: "#E8E5DF",
     muted: "#777777",
     hover: "#F3F1EC",
+    gold: "#D4AF37",
   };
 
   /* =========================================================
      NAVIGATION DATA
   ========================================================= */
-
   const navItems = [
-    {
-      label: "Home",
-      path: "/",
-      icon: <HomeOutlined />,
-    },
-    {
-      label: "Shop / Product Listing",
-      path: "/shop",
-      icon: <StorefrontOutlined />,
-    },
-    {
-      label: "Cart",
-      path: "/bag",
-      icon: <ShoppingBagOutlined />,
-    },
-    {
-      label: "Checkout",
-      path: "/checkout",
-      icon: <CreditCardOutlined />,
-    },
-    {
-      label: "Customer Account",
-      path: "/account",
-      icon: <Person />,
-    },
-    {
-      label: "Wishlist",
-      path: "/wishlist",
-      icon: <FavoriteBorder />,
-    },
-    {
-      label: "Contact & Support",
-      path: "/contact",
-      icon: <SupportAgentOutlined />,
-    },
-    {
-      label: "Search",
-      path: "/search",
-      icon: <Search />,
-    },
+    { label: "Home", path: "/", icon: <HomeOutlined /> },
+    { label: "Shop / Product Listing", path: "/shop", icon: <StorefrontOutlined /> },
+    { label: "Cart", path: "/bag", icon: <ShoppingBagOutlined /> },
+    { label: "Checkout", path: "/checkout", icon: <CreditCardOutlined /> },
+    { label: "Customer Account", path: "/account", icon: <Person /> },
+    { label: "Wishlist", path: "/wishlist", icon: <FavoriteBorder /> },
+    { label: "Contact & Support", path: "/contact", icon: <SupportAgentOutlined /> },
   ];
-
-  /* =========================================================
-     NAVIGATION FUNCTION
-  ========================================================= */
 
   const goTo = (path) => {
     navigate(path);
     setDrawerOpen(false);
   };
-
-  /* =========================================================
-     ACTIVE PAGE
-  ========================================================= */
 
   const isActive = (path) => {
     if (path === "/") {
@@ -145,10 +118,6 @@ const Navbar = () => {
     }
     return location.pathname.startsWith(path);
   };
-
-  /* =========================================================
-     DESKTOP NAV ITEM
-  ========================================================= */
 
   const DesktopNavItem = ({ item }) => {
     const active = isActive(item.path);
@@ -160,59 +129,31 @@ const Navbar = () => {
         color="inherit"
         sx={{
           position: "relative",
-
           minWidth: "auto",
-
-          px: {
-            md: 1.2,
-            lg: 1.4,
-          },
-
+          px: { md: 1, lg: 1.3 },
           py: 1,
-
           color: colors.black,
-
-          fontSize: {
-            md: "12px",
-            lg: "13px",
-            xl: "13px",
-          },
-
+          fontSize: { md: "11px", lg: "12px", xl: "13px" },
           fontWeight: active ? 700 : 500,
-
           textTransform: "none",
-
           letterSpacing: "0.1px",
-
           whiteSpace: "nowrap",
-
           borderRadius: 0,
-
           "&:hover": {
             backgroundColor: "transparent",
             color: "#555555",
           },
-
           "&::after": {
             content: '""',
-
             position: "absolute",
-
             left: "50%",
-
             bottom: 3,
-
             width: active ? "65%" : "0%",
-
             height: "1.5px",
-
             backgroundColor: colors.black,
-
             transform: "translateX(-50%)",
-
             transition: "width 0.25s ease",
           },
-
           "&:hover::after": {
             width: "65%",
           },
@@ -223,16 +164,7 @@ const Navbar = () => {
     );
   };
 
-  /* =========================================================
-     ICON BUTTON
-  ========================================================= */
-
-  const ActionIcon = ({
-    label,
-    icon,
-    path,
-    badge,
-  }) => {
+  const ActionIcon = ({ label, icon, path, badge }) => {
     const active = isActive(path);
 
     return (
@@ -240,39 +172,14 @@ const Navbar = () => {
         onClick={() => goTo(path)}
         aria-label={label}
         sx={{
-          width: {
-            xs: 38,
-            sm: 40,
-            md: 42,
-          },
-
-          height: {
-            xs: 38,
-            sm: 40,
-            md: 42,
-          },
-
+          width: { xs: 36, sm: 38, md: 40 },
+          height: { xs: 36, sm: 38, md: 40 },
           color: colors.black,
-
           borderRadius: "50%",
-
-          backgroundColor: active
-            ? colors.hover
-            : "transparent",
-
+          backgroundColor: active ? colors.hover : "transparent",
           transition: "all 0.2s ease",
-
-          "&:hover": {
-            backgroundColor: colors.hover,
-          },
-
-          "& svg": {
-            fontSize: {
-              xs: 20,
-              sm: 21,
-              md: 22,
-            },
-          },
+          "&:hover": { backgroundColor: colors.hover },
+          "& svg": { fontSize: { xs: 19, sm: 20, md: 21 } },
         }}
       >
         {badge ? (
@@ -283,8 +190,8 @@ const Navbar = () => {
                 backgroundColor: colors.black,
                 color: colors.white,
                 fontSize: "9px",
-                minWidth: 17,
-                height: 17,
+                minWidth: 16,
+                height: 16,
                 padding: 0,
               },
             }}
@@ -298,66 +205,29 @@ const Navbar = () => {
     );
   };
 
-  /* =========================================================
-     RETURN
-  ========================================================= */
-
   return (
     <>
-      {/* =====================================================
-          ANNOUNCEMENT BAR
-      ===================================================== */}
-
+      {/* ANNOUNCEMENT BAR */}
       <Box
         sx={{
           width: "100%",
-
           backgroundColor: colors.black,
-
           color: colors.white,
-
           textAlign: "center",
-
-          py: {
-            xs: 0.8,
-            sm: 0.9,
-            md: 1,
-          },
-
+          py: { xs: 0.8, sm: 0.9, md: 1 },
           px: 2,
-
-          minHeight: {
-            xs: 31,
-            sm: 33,
-            md: 35,
-          },
-
+          minHeight: { xs: 31, sm: 33, md: 35 },
           display: "flex",
-
           alignItems: "center",
-
           justifyContent: "center",
         }}
       >
         <Typography
           sx={{
-            fontSize: {
-              xs: "8px",
-              sm: "9px",
-              md: "10px",
-              lg: "11px",
-            },
-
+            fontSize: { xs: "8px", sm: "9px", md: "10px", lg: "11px" },
             fontWeight: 600,
-
-            letterSpacing: {
-              xs: "1px",
-              sm: "1.4px",
-              md: "1.7px",
-            },
-
+            letterSpacing: { xs: "1px", sm: "1.4px", md: "1.7px" },
             lineHeight: 1,
-
             whiteSpace: "nowrap",
           }}
         >
@@ -365,22 +235,15 @@ const Navbar = () => {
         </Typography>
       </Box>
 
-      {/* =====================================================
-          MAIN NAVBAR
-      ===================================================== */}
-
+      {/* MAIN NAVBAR */}
       <AppBar
         position="sticky"
         elevation={0}
         sx={{
           top: 0,
-
           backgroundColor: colors.background,
-
           color: colors.black,
-
           borderBottom: `1px solid ${colors.border}`,
-
           zIndex: 1100,
         }}
       >
@@ -388,434 +251,281 @@ const Navbar = () => {
           disableGutters
           sx={{
             width: "100%",
-
-            minHeight: {
-              xs: 64,
-              sm: 68,
-              md: 72,
-              lg: 76,
-            },
-
-            px: {
-              xs: 1.5,
-              sm: 2.5,
-              md: 3,
-              lg: 4,
-              xl: 5,
-            },
-
+            minHeight: { xs: 64, sm: 68, md: 72, lg: 76 },
+            px: { xs: 1.5, sm: 2, md: 3, lg: 4, xl: 5 },
             display: "flex",
-
             alignItems: "center",
+            justifyContent: "space-between",
+            gap: { xs: 1, sm: 2 },
           }}
         >
-          {/* =================================================
-              MOBILE / TABLET / LAPTOP MENU
-          ================================================= */}
+          {/* LEFT: MENU BUTTON (MOBILE/TABLET) & LOGO */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 } }}>
+            {isSmallScreen && (
+              <IconButton
+                onClick={() => setDrawerOpen(true)}
+                aria-label="Open navigation menu"
+                sx={{
+                  color: colors.black,
+                  width: 38,
+                  height: 38,
+                  "&:hover": { backgroundColor: colors.hover },
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
 
-          {!desktop && (
-            <IconButton
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Open navigation menu"
+            <Typography
+              component={Link}
+              to="/"
+              onClick={() => setDrawerOpen(false)}
               sx={{
-                mr: {
-                  xs: 0.5,
-                  sm: 1,
-                  md: 1,
-                },
-
+                textDecoration: "none",
                 color: colors.black,
-
-                width: 42,
-
-                height: 42,
-
-                "&:hover": {
-                  backgroundColor: colors.hover,
-                },
+                fontFamily: '"Times New Roman", Georgia, serif',
+                fontSize: { xs: "20px", sm: "24px", md: "28px", lg: "32px" },
+                fontWeight: 700,
+                letterSpacing: { xs: "1.5px", sm: "2px", md: "2.5px" },
+                lineHeight: 1,
+                whiteSpace: "nowrap",
+                transition: "opacity 0.2s ease",
+                "&:hover": { opacity: 0.65 },
               }}
             >
-              <MenuIcon />
-            </IconButton>
-          )}
+              ROXVORA
+            </Typography>
+          </Box>
 
-          {/* =================================================
-              LOGO
-          ================================================= */}
-
-          <Typography
-            component={Link}
-            to="/"
-            onClick={() => setDrawerOpen(false)}
+          {/* CENTER/FLEX: UNIVERSAL SEARCH BAR (Visible on Mobile, Tablet, Laptop & Desktop) */}
+          <Box
+            component="form"
+            onSubmit={handleSearchSubmit}
             sx={{
-              textDecoration: "none",
-
-              color: colors.black,
-
-              fontFamily:
-                '"Times New Roman", Georgia, serif',
-
-              fontSize: {
-                xs: "24px",
-                sm: "27px",
-                md: "30px",
-                lg: "32px",
-                xl: "34px",
-              },
-
-              fontWeight: 700,
-
-              letterSpacing: {
-                xs: "2px",
-                sm: "2.5px",
-                md: "3px",
-              },
-
-              lineHeight: 1,
-
-              whiteSpace: "nowrap",
-
-              transition:
-                "opacity 0.2s ease",
-
-              "&:hover": {
-                opacity: 0.65,
-              },
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              flex: { xs: 1, md: "0 1 280px", lg: "0 1 340px" },
+              maxWidth: { xs: "180px", sm: "240px", md: "280px", lg: "340px" },
+              mx: { xs: 1, sm: 2 },
             }}
           >
-            ROXVORA
-          </Typography>
+            <Search
+              sx={{
+                position: "absolute",
+                left: 10,
+                fontSize: { xs: "15px", sm: "17px" },
+                color: colors.muted,
+                pointerEvents: "none",
+              }}
+            />
+            <Box
+              component="input"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{
+                width: "100%",
+                pl: { xs: "32px", sm: "36px" },
+                pr: searchQuery ? "28px" : "10px",
+                py: { xs: "6px", sm: "8px" },
+                backgroundColor: colors.white,
+                border: `1px solid ${colors.border}`,
+                borderRadius: "20px",
+                fontSize: { xs: "11px", sm: "12px" },
+                color: colors.black,
+                outline: "none",
+                transition: "all 0.2s ease",
+                "&:focus": {
+                  borderColor: colors.black,
+                  boxShadow: "0 0 0 1px #111111",
+                },
+              }}
+            />
+            {!searchQuery && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: { xs: "32px", sm: "36px" },
+                  right: "10px",
+                  pointerEvents: "none",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={placeholderIndex}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.25 }}
+                    style={{
+                      fontSize: "11px",
+                      color: colors.muted,
+                      display: "block",
+                      fontWeight: 400,
+                    }}
+                  >
+                    {searchPlaceholders[placeholderIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </Box>
+            )}
+            {searchQuery && (
+              <IconButton
+                type="button"
+                onClick={() => setSearchQuery("")}
+                size="small"
+                sx={{
+                  position: "absolute",
+                  right: 6,
+                  padding: "2px",
+                  color: colors.muted,
+                  "&:hover": { color: colors.black },
+                }}
+              >
+                <Close sx={{ fontSize: "13px" }} />
+              </IconButton>
+            )}
+          </Box>
 
-          {/* =================================================
-              DESKTOP NAVIGATION
-
-              Only displayed on large desktop.
-          ================================================= */}
-
+          {/* DESKTOP NAV LINKS (Shown only on Desktop) */}
           {desktop && (
             <Box
               component="nav"
               sx={{
                 display: "flex",
-
                 alignItems: "center",
-
-                justifyContent: "center",
-
-                flex: 1,
-
-                ml: {
-                  lg: 3,
-                  xl: 5,
-                },
-
-                gap: {
-                  lg: 0.2,
-                  xl: 0.5,
-                },
+                gap: { lg: 0.5, xl: 1 },
               }}
             >
-              {/* Show all primary nav links on desktop */}
               {navItems.map((item) => (
-                <DesktopNavItem
-                  key={item.path}
-                  item={item}
-                />
+                <DesktopNavItem key={item.path} item={item} />
               ))}
             </Box>
           )}
 
-          {/* =================================================
-              RIGHT ACTIONS
-          ================================================= */}
-
-          <Box
-            sx={{
-              display: "flex",
-
-              alignItems: "center",
-
-              ml: "auto",
-
-              gap: {
-                xs: 0,
-                sm: 0.2,
-                md: 0.3,
-              },
-            }}
-          >
-            {/* Search */}
-
-            <ActionIcon
-              label="Search"
-              path="/search"
-              icon={<Search />}
-            />
-
-            {/* Wishlist */}
-
-            <ActionIcon
-              label="Wishlist"
-              path="/wishlist"
-              icon={<FavoriteBorder />}
-            />
-
-            {/* Cart */}
-
+          {/* RIGHT ACTIONS (Wishlist, Bag, Account) */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0, sm: 0.5 } }}>
+            <ActionIcon label="Wishlist" path="/wishlist" icon={<FavoriteBorder />} />
             <ActionIcon
               label="Shopping Bag"
               path="/bag"
               badge={totalItems > 0 ? totalItems : undefined}
               icon={<ShoppingBagOutlined />}
             />
-
-            {/* Account */}
-
-            {desktop && (
-              <ActionIcon
-                label="Customer Account"
-                path="/account"
-                icon={<Person />}
-              />
-            )}
+            <ActionIcon label="Customer Account" path="/account" icon={<Person />} />
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* =====================================================
-          MOBILE / TABLET / LAPTOP DRAWER
-      ===================================================== */}
-
+      {/* MOBILE / TABLET / LAPTOP DRAWER (For navigation items on smaller screens) */}
       <Drawer
         anchor="left"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         PaperProps={{
           sx: {
-            width: {
-              xs: "86%",
-              sm: 360,
-              md: 400,
-              lg: 420,
-            },
-
+            width: { xs: "86%", sm: 360, md: 400 },
             maxWidth: "420px",
-
-            backgroundColor:
-              colors.background,
+            backgroundColor: colors.background,
           },
         }}
       >
-        <Box
-          sx={{
-            height: "100%",
-
-            display: "flex",
-
-            flexDirection: "column",
-          }}
-        >
-          {/* =================================================
-              DRAWER HEADER
-          ================================================= */}
-
+        <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <Box
             sx={{
-              minHeight: {
-                xs: 76,
-                sm: 82,
-              },
-
-              px: {
-                xs: 2,
-                sm: 2.5,
-              },
-
+              minHeight: { xs: 76, sm: 82 },
+              px: { xs: 2, sm: 2.5 },
               display: "flex",
-
               alignItems: "center",
-
-              justifyContent:
-                "space-between",
-
-              borderBottom:
-                `1px solid ${colors.border}`,
+              justifyContent: "space-between",
+              borderBottom: `1px solid ${colors.border}`,
             }}
           >
             <Box>
               <Typography
                 sx={{
-                  fontFamily:
-                    '"Times New Roman", Georgia, serif',
-
-                  fontSize: {
-                    xs: "25px",
-                    sm: "28px",
-                  },
-
+                  fontFamily: '"Times New Roman", Georgia, serif',
+                  fontSize: { xs: "25px", sm: "28px" },
                   fontWeight: 700,
-
                   letterSpacing: "2px",
-
                   lineHeight: 1,
                 }}
               >
                 ROXVORA
               </Typography>
-
               <Typography
                 sx={{
                   fontSize: "7px",
-
                   letterSpacing: "2.5px",
-
                   color: colors.muted,
-
                   mt: 0.5,
-
                   textAlign: "center",
                 }}
               >
                 OWN THE LOOK
               </Typography>
             </Box>
-
             <IconButton
-              onClick={() =>
-                setDrawerOpen(false)
-              }
+              onClick={() => setDrawerOpen(false)}
               aria-label="Close navigation menu"
-              sx={{
-                width: 42,
-
-                height: 42,
-
-                "&:hover": {
-                  backgroundColor:
-                    colors.hover,
-                },
-              }}
+              sx={{ width: 42, height: 42, "&:hover": { backgroundColor: colors.hover } }}
             >
               <Close />
             </IconButton>
           </Box>
 
-          {/* =================================================
-              DRAWER NAVIGATION
-          ================================================= */}
-
-          <List
-            disablePadding
-            sx={{
-              px: {
-                xs: 1,
-                sm: 1.5,
-              },
-
-              py: 1.5,
-
-              flex: 1,
-            }}
-          >
+          <List disablePadding sx={{ px: { xs: 1, sm: 1.5 }, py: 1.5, flex: 1 }}>
             {navItems.map((item) => {
-              const active = isActive(
-                item.path
-              );
-
+              const active = isActive(item.path);
               return (
                 <ListItemButton
                   key={item.path}
-                  onClick={() =>
-                    goTo(item.path)
-                  }
+                  onClick={() => goTo(item.path)}
                   selected={active}
                   sx={{
-                    minHeight: {
-                      xs: 52,
-                      sm: 56,
-                    },
-
-                    px: {
-                      xs: 1.5,
-                      sm: 2,
-                    },
-
+                    minHeight: { xs: 52, sm: 56 },
+                    px: { xs: 1.5, sm: 2 },
                     mb: 0.5,
-
                     borderRadius: "4px",
-
                     color: colors.black,
-
-                    "&.Mui-selected": {
-                      backgroundColor:
-                        colors.hover,
-                    },
-
-                    "&.Mui-selected:hover": {
-                      backgroundColor:
-                        colors.hover,
-                    },
-
-                    "&:hover": {
-                      backgroundColor:
-                        colors.hover,
-                    },
+                    "&.Mui-selected": { backgroundColor: colors.hover },
+                    "&.Mui-selected:hover": { backgroundColor: colors.hover },
+                    "&:hover": { backgroundColor: colors.hover },
                   }}
                 >
                   <ListItemIcon
                     sx={{
-                      minWidth: {
-                        xs: 42,
-                        sm: 46,
-                      },
-
+                      minWidth: { xs: 42, sm: 46 },
                       color: colors.black,
-
-                      "& svg": {
-                        fontSize: {
-                          xs: 21,
-                          sm: 22,
-                        },
-                      },
+                      "& svg": { fontSize: { xs: 21, sm: 22 } },
                     }}
                   >
                     {item.icon}
                   </ListItemIcon>
-
                   <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
                       sx: {
-                        fontSize: {
-                          xs: "13px",
-                          sm: "14px",
-                        },
-
-                        fontWeight:
-                          active ? 700 : 500,
-
-                        letterSpacing:
-                          "0.1px",
+                        fontSize: { xs: "13px", sm: "14px" },
+                        fontWeight: active ? 700 : 500,
+                        letterSpacing: "0.1px",
                       },
                     }}
                   />
-
-                  {item.label === "Cart" && (
+                  {item.label === "Cart" && totalItems > 0 && (
                     <Badge
-                      badgeContent={2}
+                      badgeContent={totalItems}
                       sx={{
                         mr: 1,
-
                         "& .MuiBadge-badge": {
-                          backgroundColor:
-                            colors.black,
-
+                          backgroundColor: colors.black,
                           color: colors.white,
-
                           fontSize: "9px",
-
                           minWidth: 18,
-
                           height: 18,
                         },
                       }}
@@ -826,41 +536,9 @@ const Navbar = () => {
             })}
           </List>
 
-          {/* =================================================
-              DRAWER FOOTER
-          ================================================= */}
-
-          <Box
-            sx={{
-              px: {
-                xs: 2,
-                sm: 2.5,
-              },
-
-              pb: {
-                xs: 2.5,
-                sm: 3,
-              },
-            }}
-          >
-            <Divider
-              sx={{
-                mb: 2,
-                borderColor: colors.border,
-              }}
-            />
-
-            <Typography
-              sx={{
-                fontSize: "8px",
-
-                letterSpacing: "1.5px",
-
-                color: colors.muted,
-
-                textAlign: "center",
-              }}
-            >
+          <Box sx={{ px: { xs: 2, sm: 2.5 }, pb: { xs: 2.5, sm: 3 } }}>
+            <Divider sx={{ mb: 2, borderColor: colors.border }} />
+            <Typography sx={{ fontSize: "8px", letterSpacing: "1.5px", color: colors.muted, textAlign: "center" }}>
               ROXVORA — OWN THE LOOK
             </Typography>
           </Box>

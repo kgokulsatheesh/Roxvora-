@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FiChevronDown, FiChevronUp, FiX } from 'react-icons/fi';
-// import { formatCurrency } from '@utils/formatCurrency';
+import { formatCurrency } from '@utils/formatCurrency';
 
 const FilterSidebar = ({
   filters = {},
