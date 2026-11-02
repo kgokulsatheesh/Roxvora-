@@ -15,15 +15,56 @@ const AccountLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div style={{ minHeight: '100vh', backgroundColor: '#fafafa' }}>
       <AccountHeader user={user} onSignOut={handleSignOut} />
 
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-0 lg:gap-8 px-4 lg:px-8 py-8">
-        <AccountSidebar className="lg:shrink-0" />
-        <main className="flex-1 min-w-0 py-6 lg:py-0" id="account-content">
-          <Outlet />
-        </main>
+      {/* ── Page body ─────────────────────────────────────────── */}
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '2rem 1.5rem',
+          boxSizing: 'border-box',
+        }}
+      >
+        {/*
+          CSS Grid layout:
+            Mobile  (< 768 px) : single column — sidebar on top, content below
+            Tablet  (768-1023) : single column — sidebar scrolls horizontally as pill strip
+            Desktop (≥ 1024px) : 220px sidebar | 1fr content
+        */}
+        <div className="account-body-grid">
+          {/* LEFT — navigation sidebar */}
+          <AccountSidebar />
+
+          {/* RIGHT — page content */}
+          <main
+            id="account-content"
+            style={{ minWidth: 0 }}
+          >
+            <Outlet />
+          </main>
+        </div>
       </div>
+
+      {/* ── Layout styles ──────────────────────────────────────── */}
+      <style>{`
+        /* Mobile-first: single column, sidebar above content */
+        .account-body-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        /* Desktop (≥ 1024px): fixed 220px sidebar + flexible content column */
+        @media (min-width: 1024px) {
+          .account-body-grid {
+            grid-template-columns: 220px 1fr;
+            gap: 2rem;
+            align-items: start;
+          }
+        }
+      `}</style>
     </div>
   );
 };

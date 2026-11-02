@@ -35,7 +35,7 @@ import {
 
 /* =========================================================
     ROXVORA LUXURY NAVBAR
-    Universal Search Bar across Mobile, Tablet, Laptop & Desktop
+    Unified Navbar with Cart & Wishlist Integration
 ========================================================= */
 
 const searchPlaceholders = [
@@ -49,14 +49,20 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  const cart = useCart ? useCart() : { totalItems: 0 };
-  const totalItems = cart?.totalItems || 0;
+  // Safe check for cart context
+  let totalItems = 0;
+  try {
+    const cart = useCart();
+    totalItems = cart?.totalItems || 0;
+  } catch (err) {
+    totalItems = 0;
+  }
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  // Rotate placeholders every 3 seconds
+  // Rotate search placeholders every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex((prev) => (prev + 1) % searchPlaceholders.length);
@@ -69,17 +75,14 @@ const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
       setDrawerOpen(false);
+      setSearchQuery("");
     }
   };
 
   /* =========================================================
      RESPONSIVE BREAKPOINTS
   ========================================================= */
-  const mobile = useMediaQuery("(max-width:599px)");
-  const tablet = useMediaQuery("(min-width:600px) and (max-width:959px)");
-  const laptop = useMediaQuery("(min-width:960px) and (max-width:1199px)");
-  const desktop = useMediaQuery("(min-width:1200px)");
-  const isSmallScreen = useMediaQuery("(max-width:959px)");
+  const isDesktop = useMediaQuery("(min-width:1200px)");
 
   /* =========================================================
      COLORS
@@ -95,12 +98,12 @@ const Navbar = () => {
   };
 
   /* =========================================================
-     NAVIGATION DATA
+     NAVIGATION DATA (Includes Bag and Wishlist Links)
   ========================================================= */
   const navItems = [
     { label: "Home", path: "/", icon: <HomeOutlined /> },
     { label: "Shop / Product Listing", path: "/shop", icon: <StorefrontOutlined /> },
-    { label: "Cart", path: "/bag", icon: <ShoppingBagOutlined /> },
+    { label: "Shopping Bag", path: "/bag", icon: <ShoppingBagOutlined /> },
     { label: "Checkout", path: "/checkout", icon: <CreditCardOutlined /> },
     { label: "Customer Account", path: "/account", icon: <Person /> },
     { label: "Wishlist", path: "/wishlist", icon: <FavoriteBorder /> },
@@ -172,17 +175,17 @@ const Navbar = () => {
         onClick={() => goTo(path)}
         aria-label={label}
         sx={{
-          width: { xs: 36, sm: 38, md: 40 },
-          height: { xs: 36, sm: 38, md: 40 },
+          width: { xs: 38, sm: 40, md: 42 },
+          height: { xs: 38, sm: 40, md: 42 },
           color: colors.black,
           borderRadius: "50%",
           backgroundColor: active ? colors.hover : "transparent",
           transition: "all 0.2s ease",
           "&:hover": { backgroundColor: colors.hover },
-          "& svg": { fontSize: { xs: 19, sm: 20, md: 21 } },
+          "& svg": { fontSize: { xs: 20, sm: 21, md: 22 } },
         }}
       >
-        {badge ? (
+        {badge !== undefined ? (
           <Badge
             badgeContent={badge}
             sx={{
@@ -190,8 +193,8 @@ const Navbar = () => {
                 backgroundColor: colors.black,
                 color: colors.white,
                 fontSize: "9px",
-                minWidth: 16,
-                height: 16,
+                minWidth: 17,
+                height: 17,
                 padding: 0,
               },
             }}
@@ -252,23 +255,22 @@ const Navbar = () => {
           sx={{
             width: "100%",
             minHeight: { xs: 64, sm: 68, md: 72, lg: 76 },
-            px: { xs: 1.5, sm: 2, md: 3, lg: 4, xl: 5 },
+            px: { xs: 1.5, sm: 2.5, md: 3, lg: 4, xl: 5 },
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: { xs: 1, sm: 2 },
           }}
         >
-          {/* LEFT: MENU BUTTON (MOBILE/TABLET) & LOGO */}
+          {/* LEFT: MOBILE MENU BUTTON & LOGO */}
           <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 } }}>
-            {isSmallScreen && (
+            {!isDesktop && (
               <IconButton
                 onClick={() => setDrawerOpen(true)}
                 aria-label="Open navigation menu"
                 sx={{
                   color: colors.black,
-                  width: 38,
-                  height: 38,
+                  width: 40,
+                  height: 40,
                   "&:hover": { backgroundColor: colors.hover },
                 }}
               >
@@ -284,9 +286,9 @@ const Navbar = () => {
                 textDecoration: "none",
                 color: colors.black,
                 fontFamily: '"Times New Roman", Georgia, serif',
-                fontSize: { xs: "20px", sm: "24px", md: "28px", lg: "32px" },
+                fontSize: { xs: "22px", sm: "26px", md: "30px", lg: "32px" },
                 fontWeight: 700,
-                letterSpacing: { xs: "1.5px", sm: "2px", md: "2.5px" },
+                letterSpacing: { xs: "2px", sm: "2.5px", md: "3px" },
                 lineHeight: 1,
                 whiteSpace: "nowrap",
                 transition: "opacity 0.2s ease",
@@ -297,108 +299,17 @@ const Navbar = () => {
             </Typography>
           </Box>
 
-          {/* CENTER/FLEX: UNIVERSAL SEARCH BAR (Visible on Mobile, Tablet, Laptop & Desktop) */}
-          <Box
-            component="form"
-            onSubmit={handleSearchSubmit}
-            sx={{
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              flex: { xs: 1, md: "0 1 280px", lg: "0 1 340px" },
-              maxWidth: { xs: "180px", sm: "240px", md: "280px", lg: "340px" },
-              mx: { xs: 1, sm: 2 },
-            }}
-          >
-            <Search
-              sx={{
-                position: "absolute",
-                left: 10,
-                fontSize: { xs: "15px", sm: "17px" },
-                color: colors.muted,
-                pointerEvents: "none",
-              }}
-            />
-            <Box
-              component="input"
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{
-                width: "100%",
-                pl: { xs: "32px", sm: "36px" },
-                pr: searchQuery ? "28px" : "10px",
-                py: { xs: "6px", sm: "8px" },
-                backgroundColor: colors.white,
-                border: `1px solid ${colors.border}`,
-                borderRadius: "20px",
-                fontSize: { xs: "11px", sm: "12px" },
-                color: colors.black,
-                outline: "none",
-                transition: "all 0.2s ease",
-                "&:focus": {
-                  borderColor: colors.black,
-                  boxShadow: "0 0 0 1px #111111",
-                },
-              }}
-            />
-            {!searchQuery && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  left: { xs: "32px", sm: "36px" },
-                  right: "10px",
-                  pointerEvents: "none",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={placeholderIndex}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.25 }}
-                    style={{
-                      fontSize: "11px",
-                      color: colors.muted,
-                      display: "block",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {searchPlaceholders[placeholderIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </Box>
-            )}
-            {searchQuery && (
-              <IconButton
-                type="button"
-                onClick={() => setSearchQuery("")}
-                size="small"
-                sx={{
-                  position: "absolute",
-                  right: 6,
-                  padding: "2px",
-                  color: colors.muted,
-                  "&:hover": { color: colors.black },
-                }}
-              >
-                <Close sx={{ fontSize: "13px" }} />
-              </IconButton>
-            )}
-          </Box>
-
-          {/* DESKTOP NAV LINKS (Shown only on Desktop) */}
-          {desktop && (
+          {/* DESKTOP NAV LINKS */}
+          {isDesktop && (
             <Box
               component="nav"
               sx={{
                 display: "flex",
                 alignItems: "center",
+                flex: 1,
+                justifyContent: "center",
                 gap: { lg: 0.5, xl: 1 },
+                mx: 2,
               }}
             >
               {navItems.map((item) => (
@@ -407,78 +318,185 @@ const Navbar = () => {
             </Box>
           )}
 
-          {/* RIGHT ACTIONS (Wishlist, Bag, Account) */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0, sm: 0.5 } }}>
+          {/* DESKTOP SEARCH BAR & RIGHT ACTIONS (Wishlist, Bag, Account) */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 } }}>
+            {isDesktop && (
+              <Box
+                component="form"
+                onSubmit={handleSearchSubmit}
+                sx={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  width: "240px",
+                  mr: 1,
+                }}
+              >
+                <Search
+                  sx={{
+                    position: "absolute",
+                    left: 10,
+                    fontSize: "17px",
+                    color: colors.muted,
+                    pointerEvents: "none",
+                  }}
+                />
+                <Box
+                  component="input"
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  sx={{
+                    width: "100%",
+                    pl: "36px",
+                    pr: searchQuery ? "28px" : "10px",
+                    py: "8px",
+                    backgroundColor: colors.white,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    color: colors.black,
+                    outline: "none",
+                    "&:focus": { borderColor: colors.black, boxShadow: "0 0 0 1px #111111" },
+                  }}
+                />
+                {!searchQuery && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      left: "36px",
+                      right: "10px",
+                      pointerEvents: "none",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={placeholderIndex}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.25 }}
+                        style={{ fontSize: "11px", color: colors.muted, display: "block" }}
+                      >
+                        {searchPlaceholders[placeholderIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </Box>
+                )}
+                {searchQuery && (
+                  <IconButton
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    size="small"
+                    sx={{ position: "absolute", right: 6, padding: "2px", color: colors.muted }}
+                  >
+                    <Close sx={{ fontSize: "13px" }} />
+                  </IconButton>
+                )}
+              </Box>
+            )}
+
+            {/* Wishlist Action Icon */}
             <ActionIcon label="Wishlist" path="/wishlist" icon={<FavoriteBorder />} />
+
+            {/* Shopping Bag Action Icon with dynamic item count badge */}
             <ActionIcon
               label="Shopping Bag"
               path="/bag"
               badge={totalItems > 0 ? totalItems : undefined}
               icon={<ShoppingBagOutlined />}
             />
-            <ActionIcon label="Customer Account" path="/account" icon={<Person />} />
+
+            {/* Account Action Icon */}
+            {isDesktop && <ActionIcon label="Customer Account" path="/account" icon={<Person />} />}
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* MOBILE / TABLET / LAPTOP DRAWER (For navigation items on smaller screens) */}
+      {/* MOBILE / TABLET SLIDE-OUT DRAWER */}
       <Drawer
         anchor="left"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         PaperProps={{
           sx: {
-            width: { xs: "86%", sm: 360, md: 400 },
+            width: { xs: "88%", sm: 360 },
             maxWidth: "420px",
             backgroundColor: colors.background,
           },
         }}
       >
         <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          
+          {/* DRAWER HEADER WITH LIVE SEARCH BAR */}
           <Box
             sx={{
-              minHeight: { xs: 76, sm: 82 },
-              px: { xs: 2, sm: 2.5 },
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              p: { xs: 2, sm: 2.5 },
               borderBottom: `1px solid ${colors.border}`,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
             }}
           >
-            <Box>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Typography
                 sx={{
                   fontFamily: '"Times New Roman", Georgia, serif',
-                  fontSize: { xs: "25px", sm: "28px" },
+                  fontSize: { xs: "24px", sm: "28px" },
                   fontWeight: 700,
                   letterSpacing: "2px",
-                  lineHeight: 1,
                 }}
               >
                 ROXVORA
               </Typography>
-              <Typography
-                sx={{
-                  fontSize: "7px",
-                  letterSpacing: "2.5px",
-                  color: colors.muted,
-                  mt: 0.5,
-                  textAlign: "center",
-                }}
-              >
-                OWN THE LOOK
-              </Typography>
+              <IconButton onClick={() => setDrawerOpen(false)} sx={{ width: 40, height: 40 }}>
+                <Close />
+              </IconButton>
             </Box>
-            <IconButton
-              onClick={() => setDrawerOpen(false)}
-              aria-label="Close navigation menu"
-              sx={{ width: 42, height: 42, "&:hover": { backgroundColor: colors.hover } }}
+
+            {/* Mobile Instant Search Bar inside Drawer */}
+            <Box
+              component="form"
+              onSubmit={handleSearchSubmit}
+              sx={{ position: "relative", display: "flex", alignItems: "center", width: "100%" }}
             >
-              <Close />
-            </IconButton>
+              <Search
+                sx={{
+                  position: "absolute",
+                  left: 12,
+                  fontSize: "18px",
+                  color: colors.muted,
+                  pointerEvents: "none",
+                }}
+              />
+              <Box
+                component="input"
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                sx={{
+                  width: "100%",
+                  pl: "38px",
+                  pr: "12px",
+                  py: "10px",
+                  backgroundColor: colors.white,
+                  border: `1px solid ${colors.border}`,
+                  borderRadius: "20px",
+                  fontSize: "13px",
+                  color: colors.black,
+                  outline: "none",
+                  "&:focus": { borderColor: colors.black },
+                }}
+              />
+            </Box>
           </Box>
 
-          <List disablePadding sx={{ px: { xs: 1, sm: 1.5 }, py: 1.5, flex: 1 }}>
+          {/* ALL NAVIGATION SECTIONS IN DRAWER (Includes Bag & Wishlist) */}
+          <List disablePadding sx={{ px: 1.5, py: 1.5, flex: 1, overflowY: "auto" }}>
             {navItems.map((item) => {
               const active = isActive(item.path);
               return (
@@ -487,36 +505,25 @@ const Navbar = () => {
                   onClick={() => goTo(item.path)}
                   selected={active}
                   sx={{
-                    minHeight: { xs: 52, sm: 56 },
-                    px: { xs: 1.5, sm: 2 },
+                    minHeight: 52,
+                    px: 2,
                     mb: 0.5,
-                    borderRadius: "4px",
+                    borderRadius: "6px",
                     color: colors.black,
                     "&.Mui-selected": { backgroundColor: colors.hover },
-                    "&.Mui-selected:hover": { backgroundColor: colors.hover },
                     "&:hover": { backgroundColor: colors.hover },
                   }}
                 >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: { xs: 42, sm: 46 },
-                      color: colors.black,
-                      "& svg": { fontSize: { xs: 21, sm: 22 } },
-                    }}
-                  >
+                  <ListItemIcon sx={{ minWidth: 44, color: colors.black }}>
                     {item.icon}
                   </ListItemIcon>
                   <ListItemText
                     primary={item.label}
                     primaryTypographyProps={{
-                      sx: {
-                        fontSize: { xs: "13px", sm: "14px" },
-                        fontWeight: active ? 700 : 500,
-                        letterSpacing: "0.1px",
-                      },
+                      sx: { fontSize: "14px", fontWeight: active ? 700 : 500 },
                     }}
                   />
-                  {item.label === "Cart" && totalItems > 0 && (
+                  {item.label === "Shopping Bag" && totalItems > 0 && (
                     <Badge
                       badgeContent={totalItems}
                       sx={{
@@ -536,7 +543,8 @@ const Navbar = () => {
             })}
           </List>
 
-          <Box sx={{ px: { xs: 2, sm: 2.5 }, pb: { xs: 2.5, sm: 3 } }}>
+          {/* DRAWER FOOTER */}
+          <Box sx={{ p: 2.5 }}>
             <Divider sx={{ mb: 2, borderColor: colors.border }} />
             <Typography sx={{ fontSize: "8px", letterSpacing: "1.5px", color: colors.muted, textAlign: "center" }}>
               ROXVORA — OWN THE LOOK

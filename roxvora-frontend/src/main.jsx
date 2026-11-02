@@ -5,9 +5,14 @@ import { Toaster } from 'react-hot-toast';
 import { store } from './store/store';
 import AppRoutes from './routes/AppRoutes';
 import './styles/index.css';
+import { ThemeProvider } from '@emotion/react';
+import { theme } from './store/slices/theme';
+import { CssBaseline } from '@mui/material';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Provider store={store}>
       <AppRoutes />
       <Toaster
@@ -35,5 +40,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         }}
       />
     </Provider>
+    </ThemeProvider>
   </React.StrictMode>
 );

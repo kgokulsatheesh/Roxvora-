@@ -15,44 +15,131 @@ const NAV_ITEMS = [
     { label: 'Preferences', href: '/account/settings', icon: FiSettings },
 ];
 
-/**
- * AccountSidebar — left-hand navigation panel for account pages.
- *
- * Props:
- *   className {string} — extra wrapper class names
- */
-const AccountSidebar = ({ className = '' }) => {
+/* ─── Active / idle link colours ────────────────────────── */
+const ACTIVE_BG = '#fdf6ee';
+const ACTIVE_COLOR = '#b8934a';
+const IDLE_COLOR = '#404040';
+const HOVER_BG = '#f5f5f5';
+
+const linkBase = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px',
+    padding: '10px 14px',
+    borderRadius: '8px',
+    fontSize: '14px',
+    fontWeight: 500,
+    whiteSpace: 'nowrap',
+    textDecoration: 'none',
+    transition: 'background 0.15s, color 0.15s',
+    width: '100%',
+    boxSizing: 'border-box',
+};
+
+const AccountSidebar = () => {
     return (
-        <aside
-            className={`w-full lg:w-56 xl:w-64 ${className}`}
-            aria-label="Account navigation"
-        >
+        <aside aria-label="Account navigation" className="account-sidebar">
             <nav>
-                <ul className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0" role="list">
-                    {NAV_ITEMS.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <li key={item.href} role="none" className="flex-shrink-0 lg:flex-shrink">
-                                <NavLink
-                                    to={item.href}
-                                    end={item.end}
-                                    className={({ isActive }) =>
-                                        `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors
-                    ${isActive
-                                            ? 'bg-primary-50 text-secondary'
-                                            : 'text-neutral-600 hover:bg-neutral-100 hover:text-primary'
-                                        }`
+                <ul
+                    className="account-sidebar-nav"
+                    role="list"
+                    style={{
+                        listStyle: 'none',
+                        margin: 0,
+                        padding: 0,
+                    }}
+                >
+                    {NAV_ITEMS.map(({ href, label, icon: Icon, end }) => (
+                        <li key={href} role="none">
+                            <NavLink
+                                to={href}
+                                end={end}
+                                style={({ isActive }) => ({
+                                    ...linkBase,
+                                    backgroundColor: isActive ? ACTIVE_BG : 'transparent',
+                                    color: isActive ? ACTIVE_COLOR : IDLE_COLOR,
+                                })}
+                                onMouseEnter={(e) => {
+                                    if (e.currentTarget.getAttribute('aria-current') !== 'page') {
+                                        e.currentTarget.style.backgroundColor = HOVER_BG;
                                     }
-                                    aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
-                                >
-                                    <Icon className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                                    {item.label}
-                                </NavLink>
-                            </li>
-                        );
-                    })}
+                                }}
+                                onMouseLeave={(e) => {
+                                    if (e.currentTarget.getAttribute('aria-current') !== 'page') {
+                                        e.currentTarget.style.backgroundColor = 'transparent';
+                                    }
+                                }}
+                                aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
+                            >
+                                <Icon
+                                    style={{ width: 16, height: 16, flexShrink: 0 }}
+                                    aria-hidden="true"
+                                />
+                                {label}
+                            </NavLink>
+                        </li>
+                    ))}
                 </ul>
             </nav>
+
+            {/*
+        Responsive rules for the sidebar nav:
+
+        Mobile  (< 1024px):
+          - Nav items sit in a HORIZONTAL scrollable row (pill strip under the header).
+          - The aside takes full width.
+
+        Desktop (≥ 1024px):
+          - Nav items stack VERTICALLY.
+          - The aside stays in its 220px grid column.
+          - Sticky so it stays visible while the right column scrolls.
+      */}
+            <style>{`
+        /* ── Mobile / Tablet ── */
+        .account-sidebar {
+          width: 100%;
+        }
+
+        .account-sidebar-nav {
+          display: flex;
+          flex-direction: row;
+          gap: 4px;
+          overflow-x: auto;
+          overflow-y: visible;
+          padding-bottom: 4px;
+          /* hide scrollbar visually but keep it functional */
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .account-sidebar-nav::-webkit-scrollbar {
+          display: none;
+        }
+
+        .account-sidebar-nav li {
+          flex-shrink: 0;
+        }
+
+        /* ── Desktop ── */
+        @media (min-width: 1024px) {
+          .account-sidebar {
+            /* stays in its 220px grid column — no position:sticky needed */
+          }
+
+          .account-sidebar-nav {
+            flex-direction: column;
+            overflow-x: visible;
+            overflow-y: visible;
+            padding-bottom: 0;
+            gap: 2px;
+          }
+
+          .account-sidebar-nav li {
+            flex-shrink: unset;
+            width: 100%;
+          }
+        }
+      `}</style>
         </aside>
     );
 };
